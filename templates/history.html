@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Warning History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>💧 AquaGaurd</h2>
+    <a href="{{ url_for('dashboard') }}">Current Stats</a>
+    <a href="{{ url_for('history') }}">Warning History</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</div>
+
+<div class="main">
+    <h1>Warning History</h1>
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>pH</th>
+            <th>Temperature</th>
+            <th>Turbidity</th>
+            <th>Risk</th>
+        </tr>
+        {% for record in data %}
+        <tr>
+            <td>{{ record.time }}</td>
+            <td>{{ record.ph }}</td>
+            <td>{{ record.temperature }}</td>
+            <td>{{ record.turbidity }}</td>
+            <td class="{{ 'safe' if record.risk=='SAFE' else 'danger' }}">{{ record.risk }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>

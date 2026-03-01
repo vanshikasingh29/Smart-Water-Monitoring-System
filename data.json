@@ -1,0 +1,18 @@
+{
+  "current": {
+    "ph": 7.2,
+    "temperature": 22.5,
+    "turbidity": 3.1,
+    "risk": "DANGER",
+    "timestamp": "2026-03-01 12:00:00"
+  },
+  
+  "notifications": [
+    {"message": "High turbidity detected", "time": "2026-03-01 10:00:00"},
+    {"message": "pH slightly high", "time": "2026-02-28 18:30:00"}
+  ],
+  "history": [
+    {"ph": 6.8, "temperature": 21, "turbidity": 4.2, "risk": "WARNING", "time": "2026-02-28 12:00:00"},
+    {"ph": 7.5, "temperature": 22, "turbidity": 3.5, "risk": "SAFE", "time": "2026-02-28 08:00:00"}
+  ]
+}

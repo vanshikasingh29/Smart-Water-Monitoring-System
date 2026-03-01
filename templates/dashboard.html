@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Water Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>💧 AquaGaurd</h2>
+    <a href="{{ url_for('dashboard') }}">Current Stats</a>
+    <a href="{{ url_for('history') }}">Warning History</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</div>
+
+<div class="main">
+    <h1>Current Water Stats</h1>
+
+    <div class="cards">
+        <div class="card">
+            <h3>pH</h3>
+            <p>{{ data.current.ph }}</p>
+        </div>
+        <div class="card">
+            <h3>Temperature</h3>
+            <p>{{ data.current.temperature }}°C</p>
+        </div>
+        <div class="card">
+            <h3>Turbidity</h3>
+            <p>{{ data.current.turbidity }} NTU</p>
+        </div>
+        <div class="card">
+            <h3>Status</h3>
+            <p class="{{ 'safe' if data.current.risk=='SAFE' else 'danger' }}">{{ data.current.risk }}</p>
+        </div>
+    </div>
+
+    <h2>Notifications</h2>
+    <ul id="notifications" class="notifications">
+        {% for note in data.notifications %}
+        <li>{{ note.time }} - {{ note.message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    // Auto-refresh notifications every 5 seconds
+    setInterval(function(){
+        fetch("/get_notifications")
+        .then(response => response.json())
+        .then(data => {
+            let list = document.getElementById("notifications");
+            list.innerHTML = "";
+            data.forEach(note => {
+                list.innerHTML += `<li>${note.time} - ${note.message}</li>`;
+            });
+        });
+    }, 5000);
+</script>
+
+</body>
+</html>
