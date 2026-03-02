@@ -3,64 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>Water Dashboard</title>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2>💧 AquaGaurd</h2>
-    <a href="{{ url_for('dashboard') }}">Current Stats</a>
-    <a href="{{ url_for('history') }}">Warning History</a>
+    <h2>💧 AquaGuard</h2>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('history') }}">History</a>
     <a href="{{ url_for('logout') }}">Logout</a>
 </div>
 
 <div class="main">
-    <h1>Current Water Stats</h1>
 
-    <div class="cards">
-        <div class="card">
-            <h3>pH</h3>
-            <p>{{ data.current.ph }}</p>
-        </div>
-        <div class="card">
-            <h3>Temperature</h3>
-            <p>{{ data.current.temperature }}°C</p>
-        </div>
-        <div class="card">
-            <h3>Turbidity</h3>
-            <p>{{ data.current.turbidity }} NTU</p>
-        </div>
-        <div class="card">
-            <h3>Status</h3>
-            <p class="{{ 'safe' if data.current.risk=='SAFE' else 'danger' }}">{{ data.current.risk }}</p>
-        </div>
-    </div>
+    <h1>Water Quality Statistics</h1>
 
-    <h2>Notifications</h2>
-    <ul id="notifications" class="notifications">
-        {% for note in data.notifications %}
-        <li>{{ note.time }} - {{ note.message }}</li>
-        {% endfor %}
-    </ul>
+    <!-- CARDS -->
+    <section class="dashboard">
+
+        <div class="card">
+            <h2>pH Level</h2>
+            <p>{{ current.ph }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Turbidity</h2>
+            <p>{{ current.turbidity }} NTU</p>
+        </div>
+
+        <div class="card">
+            <h2>Temperature</h2>
+            <p>{{ current.temperature }} °C</p>
+        </div>
+
+        <div class="card risk">
+            <h2>Risk Level</h2>
+            <p class="{{ 'safe' if current.risk=='SAFE' else 'danger' }}">
+                {{ current.risk }}
+            </p>
+        </div>
+
+    </section>
+
+    <!-- ALERTS -->
+    <section class="alerts">
+        <h2>System Alerts</h2>
+        <ul>
+            {% for alert in alerts %}
+                <li>{{ alert.time }} - {{ alert.message }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- CHART -->
+    <section class="chart">
+        <h2>pH Trend (History)</h2>
+        <canvas id="myChart"></canvas>
+    </section>
+
 </div>
 
 <script>
-    // Auto-refresh notifications every 5 seconds
-    setInterval(function(){
-        fetch("/get_notifications")
-        .then(response => response.json())
-        .then(data => {
-            let list = document.getElementById("notifications");
-            list.innerHTML = "";
-            data.forEach(note => {
-                list.innerHTML += `<li>${note.time} - ${note.message}</li>`;
-            });
-        });
-    }, 5000);
+    const historyData = {{ history | tojson }};
+
+    const labels = historyData.map(item => item.time);
+    const phValues = historyData.map(item => item.ph);
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'pH Level',
+                data: phValues,
+                borderColor: '#0288d1',
+                backgroundColor: 'rgba(2,136,209,0.1)',
+                borderWidth: 2,
+                tension: 0.4
+            }]
+        }
+    });
 </script>
 
 </body>

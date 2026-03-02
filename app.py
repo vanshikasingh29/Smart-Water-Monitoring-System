@@ -42,7 +42,12 @@ def login():
 @login_required
 def dashboard():
     data = read_data()
-    return render_template("dashboard.html", data=data)
+    return render_template(
+        "dashboard.html",
+        current=data["current"],
+        alerts=data["notifications"],
+        history=data["history"]
+    )
 
 @app.route("/history")
 @login_required
