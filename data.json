@@ -13,6 +13,8 @@
   ],
   "history": [
     {"ph": 6.8, "temperature": 21, "turbidity": 4.2, "risk": "HIGH", "time": "2026-02-28 12:00:00"},
-    {"ph": 7.5, "temperature": 22, "turbidity": 3.5, "risk": "LOW", "time": "2026-02-28 08:00:00"}
+    {"ph": 7.5, "temperature": 22, "turbidity": 3.5, "risk": "MEDIUM", "time": "2026-02-28 08:00:00"},
+    {"ph": 5.8, "temperature": 21, "turbidity": 2.2, "risk": "MEDIUM", "time": "2026-02-29 12:00:00"},
+    {"ph": 8.5, "temperature": 22, "turbidity": 5.5, "risk": "LOW", "time": "2026-02-29 08:00:00"}
   ]
 }
