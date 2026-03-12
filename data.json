@@ -1,8 +1,8 @@
 {
   "current": {
-    "ph": 7.2,
+    "ph": 7.1,
     "temperature": 22.5,
-    "turbidity": 3.1,
+    "turbidity": 3.0,
     "risk": "SAFE",
     "timestamp": "2026-03-01 12:00:00"
   },
