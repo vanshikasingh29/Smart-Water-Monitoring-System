@@ -1,59 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Water Monitoring Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .login-container {
-            background-color: white;
-            padding: 40px 50px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            width: 350px;
-            text-align: center;
-        }
-        h1 { color: #1e3c72; margin-bottom: 30px; }
-        input[type="text"], input[type="password"] {
-            width: 90%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        input[type="submit"] {
-            background-color: #1e3c72;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-        input[type="submit"]:hover { background-color: #4a90e2; }
-        p { font-size: 14px; color: #555; }
-    </style>
+
+<meta charset="UTF-8">
+<title>Water Monitoring Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'Roboto',sans-serif;
+background:linear-gradient(to right,#a1c4fd,#c2e9fb);
+height:100vh;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.login-container{
+background:white;
+padding:40px 50px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,0.2);
+width:350px;
+text-align:center;
+}
+
+h1{
+color:#1e3c72;
+margin-bottom:30px;
+}
+
+input[type="text"],
+input[type="password"]{
+width:90%;
+padding:12px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+input[type="submit"]{
+background-color:#1e3c72;
+color:white;
+padding:12px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+transition:0.3s;
+}
+
+input[type="submit"]:hover{
+background-color:#4a90e2;
+}
+
+p{
+font-size:14px;
+color:#555;
+}
+
+.error{
+color:red;
+font-size:12px;
+margin-top:8px;
+}
+
+.register-btn{
+margin-top:10px;
+background:#4a90e2;
+color:white;
+padding:10px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.register-btn:hover{
+background:#1e3c72;
+}
+
+</style>
+
 </head>
+
 <body>
+
 <div class="login-container">
-    <h1>Water Monitoring</h1>
-    <form method="POST">
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="submit" value="Login">
-    </form>
-    <p>Enter your credentials to access the dashboard</p>
+
+<h1>Water Monitoring</h1>
+
+<form method="POST">
+
+<input type="text" name="username" placeholder="Username" required><br>
+
+<input type="password" name="password" placeholder="Password" required><br>
+
+<input type="submit" value="Login">
+
+</form>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+<p>Enter your credentials to access the dashboard</p>
+
+<p>Don't have an account?</p>
+
+<a href="{{ url_for('register') }}">
+<button class="register-btn">Create Account</button>
+</a>
+
 </div>
+
 </body>
 </html>
