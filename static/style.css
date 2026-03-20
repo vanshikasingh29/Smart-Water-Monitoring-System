@@ -22,8 +22,15 @@ body {
     font-size: 18px;
 }
 
+/* ICON SPACING */
+.sidebar a i {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
 .sidebar a {
-    display: block;
+    display: flex;
+    align-items: center;
     color: white;
     padding: 10px 15px;
     text-decoration: none;

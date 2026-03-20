@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Water Dashboard</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 </head>
 
@@ -12,15 +13,15 @@
 <div class="sidebar">
     <h2>💧 AquaGuard</h2>
 
-    <a href="{{ url_for('dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('history') }}">History</a>
+    <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
 
     {% if is_admin %}
-    <a href="{{ url_for('manage_users') }}">Users</a>
+    <a href="{{ url_for('manage_users') }}"><i class="fas fa-users"></i> Users</a>
     {% endif %}
 
     <div class="logout">
-        <a href="#" onclick="confirmLogout()">Logout</a>
+        <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 </div>
 
@@ -47,14 +48,11 @@
 
 <div class="card">
 <h2>Risk Level</h2>
-<p class="{{ 'safe' if current.risk=='SAFE' else 'danger' }}">
-{{ current.risk }}
-</p>
+<p class="{{ 'safe' if current.risk=='SAFE' else 'danger' }}">{{ current.risk }}</p>
 </div>
 
 </section>
 
-<!-- ADMIN PANEL -->
 {% if is_admin %}
 <section class="alerts">
 <h2>Admin Overview</h2>
@@ -85,7 +83,6 @@
 </section>
 {% endif %}
 
-<!-- ALERTS -->
 <section class="alerts">
 <h2>System Alerts</h2>
 <ul>
@@ -96,13 +93,11 @@
 {% if is_admin %}
 <a class="delete-btn" href="{{ url_for('delete_alert', index=loop.index0) }}" onclick="return confirmDelete()">✖</a>
 {% endif %}
-
 </li>
 {% endfor %}
 </ul>
 </section>
 
-<!-- CHART -->
 <section class="chart">
 <h2>pH Trend</h2>
 <canvas id="myChart"></canvas>
