@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Warning History</title>
+    <title>User Management</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
 
 <div class="sidebar">
@@ -23,25 +23,25 @@
 </div>
 
 <div class="main">
-    <h1>Warning History</h1>
+    <h1>User Management</h1>
 
     <table>
         <tr>
-            <th>Time</th>
-            <th>pH</th>
-            <th>Temperature</th>
-            <th>Turbidity</th>
-            <th>Risk</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Action</th>
         </tr>
-        {% for record in data %}
+
+        {% for user, info in users.items() %}
         <tr>
-            <td>{{ record.time }}</td>
-            <td>{{ record.ph }}</td>
-            <td>{{ record.temperature }}</td>
-            <td>{{ record.turbidity }}</td>
-            <td class="{{ 'safe' if record.risk=='SAFE' else 'danger' }}">{{ record.risk }}</td>
+            <td>{{ user }}</td>
+            <td>{{ info.role }}</td>
+            <td>
+                <a class="delete-btn" href="{{ url_for('delete_user', username=user) }}" onclick="return confirmDelete()">Delete</a>
+            </td>
         </tr>
         {% endfor %}
+
     </table>
 </div>
 
@@ -50,6 +50,10 @@ function confirmLogout() {
     if (confirm("Are you sure you want to logout?")) {
         window.location.href = "{{ url_for('logout') }}";
     }
+}
+
+function confirmDelete() {
+    return confirm("Are you sure you want to delete this?");
 }
 </script>
 

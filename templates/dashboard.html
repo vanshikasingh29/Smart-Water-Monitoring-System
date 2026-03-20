@@ -1,91 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Water Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<title>Water Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 </head>
+
 <body>
 
 <div class="sidebar">
     <h2>💧 AquaGuard</h2>
+
     <a href="{{ url_for('dashboard') }}">Dashboard</a>
     <a href="{{ url_for('history') }}">History</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
+
+    {% if is_admin %}
+    <a href="{{ url_for('manage_users') }}">Users</a>
+    {% endif %}
+
+    <div class="logout">
+        <a href="#" onclick="confirmLogout()">Logout</a>
+    </div>
 </div>
 
 <div class="main">
 
-    <h1>Water Quality Statistics</h1>
+<h1>Water Quality Statistics</h1>
 
-    <!-- CARDS -->
-    <section class="dashboard">
+<section class="dashboard">
 
-        <div class="card">
-            <h2>pH Level</h2>
-            <p>{{ current.ph }}</p>
-        </div>
+<div class="card">
+<h2>pH Level</h2>
+<p>{{ current.ph }}</p>
+</div>
 
-        <div class="card">
-            <h2>Turbidity</h2>
-            <p>{{ current.turbidity }} NTU</p>
-        </div>
+<div class="card">
+<h2>Turbidity</h2>
+<p>{{ current.turbidity }} NTU</p>
+</div>
 
-        <div class="card">
-            <h2>Temperature</h2>
-            <p>{{ current.temperature }} °C</p>
-        </div>
+<div class="card">
+<h2>Temperature</h2>
+<p>{{ current.temperature }} °C</p>
+</div>
 
-        <div class="card risk">
-            <h2>Risk Level</h2>
-            <p class="{{ 'safe' if current.risk=='SAFE' else 'danger' }}">
-                {{ current.risk }}
-            </p>
-        </div>
+<div class="card">
+<h2>Risk Level</h2>
+<p class="{{ 'safe' if current.risk=='SAFE' else 'danger' }}">
+{{ current.risk }}
+</p>
+</div>
 
-    </section>
+</section>
 
-    <!-- ALERTS -->
-    <section class="alerts">
-        <h2>System Alerts</h2>
-        <ul>
-            {% for alert in alerts %}
-                <li>{{ alert.time }} - {{ alert.message }}</li>
-            {% endfor %}
-        </ul>
-    </section>
+<!-- ADMIN PANEL -->
+{% if is_admin %}
+<section class="alerts">
+<h2>Admin Overview</h2>
 
-    <!-- CHART -->
-    <section class="chart">
-        <h2>pH Trend</h2>
-        <canvas id="myChart"></canvas>
-    </section>
+<div class="dashboard">
+
+<div class="card">
+<h2>User</h2>
+<p>{{ username }}</p>
+</div>
+
+<div class="card">
+<h2>Alerts Today</h2>
+<p>{{ alerts_today }}</p>
+</div>
+
+<div class="card">
+<h2>System</h2>
+<p>Operational</p>
+</div>
+
+<div class="card">
+<h2>Report</h2>
+<a href="{{ url_for('download_report') }}">Download</a>
+</div>
+
+</div>
+</section>
+{% endif %}
+
+<!-- ALERTS -->
+<section class="alerts">
+<h2>System Alerts</h2>
+<ul>
+{% for alert in alerts %}
+<li>
+{{ alert.time }} - {{ alert.message }}
+
+{% if is_admin %}
+<a class="delete-btn" href="{{ url_for('delete_alert', index=loop.index0) }}" onclick="return confirmDelete()">✖</a>
+{% endif %}
+
+</li>
+{% endfor %}
+</ul>
+</section>
+
+<!-- CHART -->
+<section class="chart">
+<h2>pH Trend</h2>
+<canvas id="myChart"></canvas>
+</section>
 
 </div>
 
 <script>
-    const historyData = {{ history | tojson }};
+function confirmLogout() {
+    if (confirm("Are you sure you want to logout?")) {
+        window.location.href = "{{ url_for('logout') }}";
+    }
+}
 
-    const labels = historyData.map(item => item.time);
-    const phValues = historyData.map(item => item.ph);
+function confirmDelete() {
+    return confirm("Are you sure you want to delete this?");
+}
 
-    const ctx = document.getElementById('myChart');
+const historyData = {{ history | tojson }};
+const labels = historyData.map(item => item.time);
+const phValues = historyData.map(item => item.ph);
 
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'pH Level',
-                data: phValues,
-                borderColor: '#0288d1',
-                backgroundColor: 'rgba(2,136,209,0.1)',
-                borderWidth: 2,
-                tension: 0.4
-            }]
-        }
-    });
+new Chart(document.getElementById('myChart'), {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'pH Level',
+            data: phValues,
+            borderColor: '#0288d1',
+            backgroundColor: 'rgba(2,136,209,0.1)',
+            tension: 0.4
+        }]
+    }
+});
 </script>
 
 </body>

@@ -9,7 +9,7 @@ body {
 /* SIDEBAR */
 .sidebar {
     height: 100%;
-    width: 140px; /* smaller sidebar */
+    width: 140px;
     position: fixed;
     background: linear-gradient(to bottom, #ef8caf, #e74e79);
     padding-top: 30px;
@@ -36,9 +36,16 @@ body {
     border-radius: 6px;
 }
 
+/* LOGOUT AT BOTTOM */
+.logout {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
 /* MAIN */
 .main {
-    margin-left: 170px; /* adjusted for smaller sidebar */
+    margin-left: 170px;
     padding: 30px;
 }
 
@@ -52,13 +59,13 @@ h1 {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    flex-wrap: nowrap; /* forces single row */
+    flex-wrap: nowrap;
 }
 
 .card {
     background: white;
     padding: 25px;
-    flex: 1; /* equal width */
+    flex: 1;
     text-align: center;
     border-radius: 18px;
     box-shadow: 0px 6px 14px rgba(0,0,0,0.07);
@@ -80,6 +87,11 @@ h1 {
     font-size: 26px;
     font-weight: bold;
     margin: 0;
+}
+
+/* ADMIN PANEL SPACING */
+.admin-panel {
+    margin-top: 30px;
 }
 
 /* RISK COLORS */
@@ -114,6 +126,17 @@ h1 {
     padding: 10px 0;
     border-bottom: 1px solid #eee;
     font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* DELETE BUTTON */
+.delete-btn {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 10px;
 }
 
 /* CHART */

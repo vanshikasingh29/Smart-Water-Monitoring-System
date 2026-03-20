@@ -1,12 +1,14 @@
 {
     "admin": {
         "password": "1234",
-        "email": "admin@email.com",
-        "phone": "0000000000"
+        "email": "admin@test.com",
+        "phone": "123456789",
+        "role": "admin"
     },
     "vanshika": {
         "password": "1234",
         "email": "v.singh@gmail.com",
-        "phone": "1111111"
+        "phone": "1111111",
+        "role": "user"
     }
 }

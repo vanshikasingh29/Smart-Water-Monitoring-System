@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import json
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
-
 
 # ---------------- LOGIN SETUP ----------------
 
@@ -13,19 +13,20 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-
 class User(UserMixin):
-    def __init__(self, username):
+    def __init__(self, username, role):
         self.id = username
+        self.role = role
 
+    def is_admin(self):
+        return self.role == "admin"
 
 @login_manager.user_loader
 def load_user(user_id):
     users = read_users()
     if user_id in users:
-        return User(user_id)
+        return User(user_id, users[user_id].get("role", "user"))
     return None
-
 
 # ---------------- USER DATABASE ----------------
 
@@ -36,11 +37,9 @@ def read_users():
     with open("user.json", "r") as f:
         return json.load(f)
 
-
 def save_users(users):
     with open("user.json", "w") as f:
         json.dump(users, f, indent=4)
-
 
 # ---------------- SENSOR DATA ----------------
 
@@ -48,8 +47,7 @@ def read_data():
     with open("data.json", "r") as f:
         return json.load(f)
 
-
-# ---------------- LOGIN PAGE ----------------
+# ---------------- LOGIN ----------------
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -69,13 +67,12 @@ def login():
             error = "Incorrect password"
 
         else:
-            login_user(User(username))
+            login_user(User(username, users[username].get("role", "user")))
             return redirect(url_for("dashboard"))
 
     return render_template("login.html", error=error)
 
-
-# ---------------- REGISTER PAGE ----------------
+# ---------------- REGISTER ----------------
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -94,7 +91,8 @@ def register():
             users[username] = {
                 "password": password,
                 "email": email,
-                "phone": phone
+                "phone": phone,
+                "role": "user"
             }
 
             save_users(users)
@@ -103,7 +101,6 @@ def register():
 
     return render_template("register.html")
 
-
 # ---------------- DASHBOARD ----------------
 
 @app.route("/dashboard")
@@ -111,14 +108,75 @@ def register():
 def dashboard():
 
     data = read_data()
+    alerts_today = len(data["notifications"])
 
     return render_template(
         "dashboard.html",
         current=data["current"],
         alerts=data["notifications"],
-        history=data["history"]
+        history=data["history"],
+        is_admin=current_user.is_admin(),
+        username=current_user.id,
+        alerts_today=alerts_today
     )
 
+# ---------------- USER MANAGEMENT ----------------
+
+@app.route("/admin/users")
+@login_required
+def manage_users():
+
+    if not current_user.is_admin():
+        return redirect(url_for("dashboard"))
+
+    users = read_users()
+    return render_template("manage_users.html", users=users)
+
+@app.route("/admin/delete_user/<username>")
+@login_required
+def delete_user(username):
+
+    if not current_user.is_admin():
+        return redirect(url_for("dashboard"))
+
+    users = read_users()
+
+    if username in users:
+        del users[username]
+        save_users(users)
+
+    return redirect(url_for("manage_users"))
+
+# ---------------- DELETE ALERT ----------------
+
+@app.route("/admin/delete_alert/<int:index>")
+@login_required
+def delete_alert(index):
+
+    if not current_user.is_admin():
+        return redirect(url_for("dashboard"))
+
+    data = read_data()
+
+    if 0 <= index < len(data["notifications"]):
+        data["notifications"].pop(index)
+
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=4)
+
+    return redirect(url_for("dashboard"))
+
+# ---------------- DOWNLOAD REPORT ----------------
+
+@app.route("/admin/download_report")
+@login_required
+def download_report():
+
+    if not current_user.is_admin():
+        return redirect(url_for("dashboard"))
+
+    data = read_data()
+    return jsonify(data["history"])
 
 # ---------------- HISTORY ----------------
 
@@ -128,35 +186,17 @@ def history():
 
     data = read_data()
 
-    return render_template(
-        "history.html",
-        data=data["history"]
-    )
-
-
-# ---------------- ALERT API ----------------
-
-@app.route("/get_notifications")
-@login_required
-def get_notifications():
-
-    data = read_data()
-
-    return jsonify(data["notifications"])
-
+    return render_template("history.html", data=data["history"])
 
 # ---------------- LOGOUT ----------------
 
 @app.route("/logout")
 @login_required
 def logout():
-
     logout_user()
-
     return redirect(url_for("login"))
 
-
-# ---------------- RUN SERVER ----------------
+# ---------------- RUN ----------------
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True)
