@@ -9,9 +9,9 @@ body {
 /* SIDEBAR */
 .sidebar {
     height: 100%;
-    width: 140px;
+    width: 150px;
     position: fixed;
-    background: linear-gradient(to bottom, #ef8caf, #e74e79);
+    background: linear-gradient(to bottom, #ff4586, #fe92cc);
     padding-top: 30px;
     color: white;
 }
@@ -46,8 +46,10 @@ body {
 /* LOGOUT AT BOTTOM */
 .logout {
     position: absolute;
-    bottom: 20px;
-    width: 100%;
+    bottom: 30px;
+    width: 100%; 
+    margin-top: auto;
+    margin-bottom: 20px; /* adjust this if you want higher/lower */
 }
 
 /* MAIN */
@@ -186,4 +188,41 @@ tr:nth-child(even) {
 
 tr:hover {
     background-color: #f1f1f1;
+}
+
+/* Sidebar filled logo - updated droplet size and centered */
+.sidebar-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px; /* space between icon and text */
+    margin-bottom: 40px; /* space from sidebar links */
+}
+
+.sidebar-logo h2 {
+    margin: 0;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+}
+
+.icon-stack {
+    position: relative;
+    display: inline-block;
+    width: 28px;  /* shield size */
+    height: 28px;
+}
+
+.icon-stack .fa-shield {
+    font-size: 29px; /* solid shield */
+    color: rgb(221, 250, 252);
+}
+
+.icon-stack .fa-tint {
+    position: absolute;
+    top: 50%;           /* vertical center */
+    left: 50%;          /* horizontal center */
+    transform: translate(-50%, -52%); /* perfectly center */
+    font-size: 16px;    /* bigger droplet */
+    color: rgb(107, 192, 238); /* blue water */
 }
