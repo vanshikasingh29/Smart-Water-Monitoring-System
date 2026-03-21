@@ -10,5 +10,11 @@
         "email": "v.singh@gmail.com",
         "phone": "1111111",
         "role": "user"
+    },
+    "rishita": {
+        "password": "1234",
+        "email": "r.goyal@gmail.com",
+        "phone": "0000000",
+        "role": "user"
     }
 }
