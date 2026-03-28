@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sample Reading</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <span class="icon-stack"><i class="fas fa-shield"></i><i class="fas fa-tint"></i></span>
+        <h2>AquaGuard</h2>
+    </div>
+
+    <div class="dropdown">
+        <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard
+            {% if samples %}<i class="fas fa-angle-down"></i>{% endif %}
+        </a>
+        {% if samples %}
+        <div class="dropdown-content">
+            {% for s in samples %}
+            <a href="{{ url_for('view_sample', name=s.name) }}">{{ s.name }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
+    {% if current_user.is_admin() %}<a href="{{ url_for('manage_users') }}"><i class="fas fa-users"></i> Users</a>{% endif %}
+
+    <div class="logout"><a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></div>
+</div>
+
+<div class="main">
+    <h1>{{ sample.name }}</h1>
+    <div class="top-actions">
+        <!-- small delete button -->
+        <button class="mini-btn delete-mini" onclick="if(confirm('Delete this sample?')) window.location='{{ url_for('delete_sample', name=sample.name) }}'">
+            ❌ Delete
+        </button>
+    </div>
+
+    <section class="dashboard">
+        <div class="card"><h2>pH Level</h2><p>{{ sample.current.ph }}</p></div>
+        <div class="card"><h2>Turbidity</h2><p>{{ sample.current.turbidity }} NTU</p></div>
+        <div class="card"><h2>Temperature</h2><p>{{ sample.current.temperature }} °C</p></div>
+        <div class="card"><h2>Risk Level</h2><p class="{{ 'safe' if sample.current.risk=='SAFE' else 'danger' }}">{{ sample.current.risk }}</p></div>
+    </section>
+
+    <section class="alerts">
+        <h2>Alerts</h2>
+        <ul>{% for alert in sample.alerts %}<li>{{ alert.time }} - {{ alert.message }}</li>{% endfor %}</ul>
+    </section>
+
+    <section class="chart">
+        <h2>pH Trend</h2>
+        <canvas id="sampleChart"></canvas>
+    </section>
+</div>
+
+<script>
+function confirmLogout() { if(confirm("Are you sure you want to logout?")) window.location.href="{{ url_for('logout') }}"; }
+
+const historyData = {{ sample.history|tojson }};
+const labels = historyData.map(i=>i.time);
+const phValues = historyData.map(i=>i.ph);
+
+new Chart(document.getElementById('sampleChart'), {
+    type:'line',
+    data:{
+        labels:labels,
+        datasets:[{
+            label:'pH Level',
+            data:phValues,
+            borderColor:'#0288d1',
+            backgroundColor:'rgba(2,136,209,0.1)',
+            tension:0.4
+        }]
+    }
+});
+</script>
+</body>
+</html>
