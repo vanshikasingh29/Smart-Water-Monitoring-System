@@ -306,3 +306,166 @@ tr:hover {
 .delete-mini:hover {
     background: #f9d6d2;
 }
+
+/* REPORT BUTTONS CONTAINER */
+.report-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+
+    /* CENTER EVERYTHING */
+    align-items: center;
+}
+
+/* AESTHETIC REPORT BUTTON */
+.download-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 80%;              /* wider but still elegant */
+    max-width: 150px;        /* keeps it neat inside card */
+
+    padding: 10px 14px;
+    border-radius: 14px;     /* softer, cuter corners */
+
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+
+    text-decoration: none;
+    color: #2c3e50;          /* soft dark text */
+
+    /* 💡 soft pastel aqua theme */
+    background: linear-gradient(135deg, #dff6ff, #cfefff);
+
+    border: 1px solid rgba(2, 136, 209, 0.15);
+
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.06);
+
+    transition: all 0.25s ease;
+}
+
+/* HOVER EFFECT (smooth & modern) */
+.download-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0px 8px 18px rgba(2, 136, 209, 0.15);
+    background: linear-gradient(135deg, #cfefff, #bfe9ff);
+}
+
+/* CLICK EFFECT */
+.download-btn:active {
+    transform: scale(0.98);
+}
+
+/* REPORT CARD ALIGNMENT */
+.report-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* BUTTON CONTAINER */
+.report-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+/* SMALL AESTHETIC BUTTON (MATCHING CARD STYLE) */
+.report-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 110px;              /* 🔥 SMALLER */
+    padding: 6px 10px;         /* compact */
+
+    border-radius: 10px;       /* matches card softness */
+
+    font-size: 12px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    color: #2c3e50;
+
+    background: linear-gradient(135deg, #eaf6ff, #d9f2ff);
+
+    border: 1px solid rgba(2, 136, 209, 0.15);
+
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.05);
+
+    transition: all 0.2s ease;
+}
+
+/* HOVER */
+.report-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 14px rgba(2, 136, 209, 0.12);
+    background: linear-gradient(135deg, #d9f2ff, #c9ecff);
+}
+
+/* CLICK */
+.report-btn:active {
+    transform: scale(0.97);
+}
+
+/* REPORT BUTTONS */
+.report-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+/* SMALL AESTHETIC BUTTONS */
+.report-btn {
+    width: 120px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+
+    background: linear-gradient(135deg, #eaf6ff, #d9f2ff);
+    color: #2c3e50;
+
+    border: 1px solid rgba(2, 136, 209, 0.15);
+    transition: 0.2s ease;
+}
+
+.report-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* 🔹 ICON INPUT WRAPPER */
+.input-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 🔹 ICON STYLE */
+.input-icon i {
+    position: absolute;
+    left: 8px;
+    font-size: 12px;
+    color: rgba(60, 60, 60, 0.5);
+}
+
+/* 🔹 INPUT + SELECT WITH ICON SPACE */
+.input-icon input,
+.input-icon select {
+    padding-left: 26px; /* space for icon */
+}
+
+/* 🔹 make selects match inputs better */
+.input-icon select {
+    appearance: none;
+}

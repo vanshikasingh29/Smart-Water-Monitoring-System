@@ -65,19 +65,49 @@ function promptSave() {
     </section>
 
     {% if is_admin %}
-    <section class="alerts">
-        <h2>Admin Overview</h2>
-        <div class="dashboard">
-            <div class="card"><h2>User</h2><p>{{ username }}</p></div>
-            <div class="card"><h2>Alerts Today</h2><p>{{ alerts_today }}</p></div>
-            <div class="card"><h2>System</h2><p>Operational</p></div>
-            <div class="card">
-                <h2>Report</h2>
-                <a class="download-btn" href="{{ url_for('download_report') }}"><i class="fas fa-download"></i></a>
+<section class="alerts">
+    <h2>Admin Overview</h2>
+
+    <div class="dashboard">
+
+        <!-- USERS CARD -->
+        <div class="card">
+            <h2>Total Users</h2>
+            <p>{{ total_users }}</p>
+        </div>
+
+        <!-- ALERTS CARD -->
+        <div class="card">
+            <h2>Alerts Today</h2>
+            <p>{{ alerts_today }}</p>
+        </div>
+
+        <!-- SYSTEM STATUS CARD -->
+        <div class="card">
+            <h2>System Status</h2>
+            <p class="{{ 'safe' if status_ok else 'danger' }}">
+                {{ status_text }}
+            </p>
+        </div>
+
+        <!-- REPORT CARD -->
+        <div class="card report-card">
+            <h2>Report</h2>
+
+            <div class="report-buttons">
+                <a class="report-btn" href="{{ url_for('download_report', report_type='weekly') }}">
+                    Weekly
+                </a>
+
+                <a class="report-btn" href="{{ url_for('download_report', report_type='monthly') }}">
+                    Monthly
+                </a>
             </div>
         </div>
-    </section>
-    {% endif %}
+
+    </div>
+</section>
+{% endif %}
 
     <section class="alerts">
         <h2>System Alerts</h2>
