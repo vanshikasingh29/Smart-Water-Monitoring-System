@@ -123,17 +123,25 @@ def dashboard():
     data = read_data()
 
     alerts_today = len(data["notifications"])
-
     users = read_users()
     total_users = len(users)
 
     status_text, status_ok = get_system_status(data)
+
+    # ✅ LOAD SAMPLES (THIS IS THE FIX)
+    samples_file = "samples.json"
+    if os.path.exists(samples_file):
+        with open(samples_file, "r") as f:
+            samples = json.load(f).get("samples", [])
+    else:
+        samples = []
 
     return render_template(
         "dashboard.html",
         current=data["current"],
         alerts=data["notifications"],
         history=data["history"],
+        samples=samples,  # ✅ IMPORTANT
         is_admin=current_user.is_admin(),
         username=current_user.id,
         alerts_today=alerts_today,

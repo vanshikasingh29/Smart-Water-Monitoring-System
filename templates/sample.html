@@ -16,17 +16,22 @@
     </div>
 
     <div class="dropdown">
-        <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard
-            {% if samples %}<i class="fas fa-angle-down"></i>{% endif %}
+    <a href="{{ url_for('dashboard') }}" class="dropdown-toggle">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+        {% if samples %}<i class="fas fa-angle-down"></i>{% endif %}
+    </a>
+
+    {% if samples %}
+    <div class="dropdown-content">
+        {% for s in samples %}
+        <a class="sample-link" href="{{ url_for('view_sample', name=s.name) }}">
+            <i class="fas fa-vial sample-icon"></i>
+            <span class="sample-text">{{ s.name }}</span>
         </a>
-        {% if samples %}
-        <div class="dropdown-content">
-            {% for s in samples %}
-            <a href="{{ url_for('view_sample', name=s.name) }}">{{ s.name }}</a>
-            {% endfor %}
-        </div>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% endif %}
+</div>
 
     <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
     {% if current_user.is_admin() %}<a href="{{ url_for('manage_users') }}"><i class="fas fa-users"></i> Users</a>{% endif %}

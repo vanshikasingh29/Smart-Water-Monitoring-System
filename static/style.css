@@ -469,3 +469,45 @@ tr:hover {
 .input-icon select {
     appearance: none;
 }
+
+./* Dropdown container spacing */
+.dropdown-content {
+    padding-left: 10px;
+    margin-top: 5px;
+}
+
+/* Each sample row */
+.sample-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 6px 10px;
+    margin: 3px 0;
+
+    font-size: 13px;
+    text-decoration: none;
+
+    border-radius: 6px;
+
+    transition: 0.2s ease;
+}
+
+/* Icon */
+.sample-icon {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Text */
+.sample-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Hover (subtle, keeps your theme) */
+.sample-link:hover {
+    transform: translateX(3px);
+    opacity: 0.9;
+}
