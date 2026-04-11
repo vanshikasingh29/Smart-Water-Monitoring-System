@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensor Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* 🔥 ROW LAYOUT */
+        .chart-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+            flex-wrap: wrap;
+            width: 95%;
+            margin: auto;
+        }
+
+        /* 🔥 BIGGER CARDS */
+        .chart-box {
+            flex: 1;
+            min-width: 320px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.3s;
+
+            /* IMPORTANT: makes charts bigger */
+            height: 420px;
+        }
+
+        .chart-box:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 🔥 BIG CANVAS */
+        canvas {
+            width: 100% !important;
+            height: 320px !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>📊 Sensor Comparison Across Samples</h2>
+
+<div class="chart-row">
+
+    <div class="chart-box">
+        <h3>Temperature</h3>
+        <canvas id="tempChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>pH Level</h3>
+        <canvas id="phChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>Turbidity</h3>
+        <canvas id="turbidityChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+const samples = {{ samples | tojson | safe }};
+
+if (!samples || samples.length === 0) {
+    document.body.innerHTML += "<p style='color:purple;text-align:center;'>No samples available</p>";
+} else {
+
+    const labels = samples.map(s => s.name);
+
+    const temperature = samples.map(s => s.current.temperature);
+    const ph = samples.map(s => s.current.ph);
+    const turbidity = samples.map(s => s.current.turbidity);
+
+    // 🔥 TEMPERATURE CHART
+    new Chart(document.getElementById('tempChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Temperature (°C)',
+                data: temperature,
+                borderColor: 'red',
+                backgroundColor: 'rgba(255,0,0,0.1)',
+                tension: 0.4,   // ✅ SMOOTH CURVE ADDED
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // 🔥 PH CHART
+    new Chart(document.getElementById('phChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'pH Level',
+                data: ph,
+                borderColor: 'green',
+                backgroundColor: 'rgba(0,128,0,0.1)',
+                tension: 0.4,   // ✅ SMOOTH CURVE ADDED
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // 🔥 TURBIDITY CHART
+    new Chart(document.getElementById('turbidityChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Turbidity (NTU)',
+                data: turbidity,
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0,0,255,0.1)',
+                tension: 0.4,   // ✅ SMOOTH CURVE ADDED
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+}
+</script>
+
+</body>
+</html>

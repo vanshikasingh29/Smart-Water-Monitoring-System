@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monthly Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h2 style="text-align:center;">📅 Monthly Water Monitoring</h2>
+
+<canvas id="monthlyChart"></canvas>
+
+<script>
+const rawData = {{ history | tojson | safe }};
+
+if (!rawData || rawData.length === 0) {
+    document.body.innerHTML += "<p style='color:red;text-align:center;'>No monthly data available</p>";
+} else {
+
+    const labels = rawData.map(d => d.timestamp || d.time);
+
+    const ph = rawData.map(d => d.ph);
+    const turbidity = rawData.map(d => d.turbidity);
+    const temperature = rawData.map(d => d.temperature);
+
+    new Chart(document.getElementById("monthlyChart"), {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "pH",
+                    data: ph,
+                    borderColor: "blue"
+                },
+                {
+                    label: "Turbidity",
+                    data: turbidity,
+                    borderColor: "green"
+                },
+                {
+                    label: "Temperature",
+                    data: temperature,
+                    borderColor: "red"
+                }
+            ]
+        }
+    });
+}
+</script>
+
+</body>
+</html>

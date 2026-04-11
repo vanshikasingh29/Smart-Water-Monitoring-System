@@ -8,26 +8,25 @@ body {
 
 /* SIDEBAR */
 .sidebar {
-    height: 100%;
-    width: 150px;
     position: fixed;
+    width: 160px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
     background: linear-gradient(to bottom, #ff4586, #fe92cc);
     padding-top: 30px;
     color: white;
 }
 
+/* SIDEBAR TITLE */
 .sidebar h2 {
     text-align: center;
     margin-bottom: 40px;
     font-size: 18px;
 }
 
-/* ICON SPACING */
-.sidebar a i {
-    margin-right: 10px;
-    font-size: 16px;
-}
-
+/* SIDEBAR LINKS */
 .sidebar a {
     display: flex;
     align-items: center;
@@ -38,23 +37,25 @@ body {
     transition: 0.3s;
 }
 
+.sidebar a i {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
 .sidebar a:hover {
     background-color: rgba(255,255,255,0.2);
     border-radius: 6px;
 }
 
-/* LOGOUT AT BOTTOM */
+/* LOGOUT FIX (NO OVERLAP) */
 .logout {
-    position: absolute;
-    bottom: 30px;
-    width: 100%; 
     margin-top: auto;
-    margin-bottom: 20px; /* adjust this if you want higher/lower */
+    padding-bottom: 20px;
 }
 
 /* MAIN */
 .main {
-    margin-left: 170px;
+    margin-left: 180px;
     padding: 30px;
 }
 
@@ -66,19 +67,17 @@ h1 {
 /* DASHBOARD CARDS */
 .dashboard {
     display: flex;
-    justify-content: space-between;
     gap: 20px;
-    flex-wrap: nowrap;
 }
 
 .card {
-    background: rgb(255, 255, 255);
+    background: white;
     padding: 25px;
     flex: 1;
     text-align: center;
     border-radius: 18px;
     box-shadow: 0px 6px 14px rgba(0,0,0,0.07);
-    transition: all 0.3s ease;
+    transition: 0.3s;
 }
 
 .card:hover {
@@ -89,28 +88,16 @@ h1 {
 .card h2 {
     font-size: 16px;
     margin-bottom: 10px;
-    font-weight: 500;
 }
 
 .card p {
     font-size: 26px;
     font-weight: bold;
-    margin: 0;
 }
 
-/* ADMIN PANEL SPACING */
-.admin-panel {
-    margin-top: 30px;
-}
-
-/* RISK COLORS */
-.safe {
-    color: #2ecc71;
-}
-
-.danger {
-    color: #e74c3c;
-}
+/* STATUS COLORS */
+.safe { color: #2ecc71; }
+.danger { color: #e74c3c; }
 
 /* ALERTS */
 .alerts {
@@ -121,31 +108,23 @@ h1 {
     box-shadow: 0px 6px 14px rgba(0,0,0,0.07);
 }
 
-.alerts h2 {
-    margin-top: 0;
-}
-
 .alerts ul {
     list-style: none;
     padding: 0;
-    margin: 0;
 }
 
 .alerts li {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
 }
 
-/* DELETE BUTTON */
+/* DELETE */
 .delete-btn {
     color: #e74c3c;
-    text-decoration: none;
     font-weight: bold;
-    margin-left: 10px;
+    text-decoration: none;
 }
 
 /* CHART */
@@ -157,7 +136,7 @@ h1 {
     box-shadow: 0px 6px 14px rgba(0,0,0,0.07);
 }
 
-/* HISTORY TABLE */
+/* TABLE */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -165,254 +144,67 @@ table {
     background: white;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0px 6px 14px rgba(0,0,0,0.07);
 }
 
 th {
-    background-color: #f8d7e2;
+    background: #f8d7e2;
     padding: 14px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 14px;
 }
 
 td {
     padding: 14px;
-    text-align: center;
-    font-size: 14px;
 }
 
 tr:nth-child(even) {
-    background-color: #fafafa;
+    background: #fafafa;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Sidebar filled logo - updated droplet size and centered */
+/* LOGO */
 .sidebar-logo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px; /* space between icon and text */
-    margin-bottom: 40px; /* space from sidebar links */
-}
-
-.sidebar-logo h2 {
-    margin: 0;
-    font-size: 18px;
-    color: white;
-    text-align: center;
+    margin-bottom: 40px;
 }
 
 .icon-stack {
     position: relative;
-    display: inline-block;
-    width: 28px;  /* shield size */
+    width: 28px;
     height: 28px;
 }
 
 .icon-stack .fa-shield {
-    font-size: 29px; /* solid shield */
+    font-size: 28px;
     color: rgb(221, 250, 252);
 }
 
 .icon-stack .fa-tint {
     position: absolute;
-    top: 50%;           /* vertical center */
-    left: 50%;          /* horizontal center */
-    transform: translate(-50%, -52%); /* perfectly center */
-    font-size: 16px;    /* bigger droplet */
-    color: rgb(107, 192, 238); /* blue water */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    font-size: 16px;
+    color: rgb(107, 192, 238);
 }
 
-/* SAVE BUTTON */
-.save-btn {
-    background: linear-gradient(to right, #0288d1, #26c6da);
-    border: none;
-    padding: 10px 18px;
-    border-radius: 10px;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
-}
-
-.save-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 6px 14px rgba(0,0,0,0.15);
-}
-
-/* SIDEBAR DROPDOWN */
-.dropdown-btn {
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.dropdown-container {
-    display: none;
-    flex-direction: column;
-    margin-left: 10px;
-}
-
-.dropdown-container a {
-    font-size: 13px;
-    padding-left: 25px;
-}
-
-/* ARROW ROTATION */
-.rotate {
-    transform: rotate(90deg);
-}
-
-/* TOP RIGHT ACTION BUTTONS CONTAINER */
+/* TOP BUTTONS */
 .top-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
     margin-bottom: 10px;
 }
 
-/* SMALL AESTHETIC BUTTON */
 .mini-btn {
-    border: none;
     padding: 6px 12px;
     border-radius: 8px;
     font-size: 12px;
+    border: none;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-/* SAVE BUTTON (soft blue) */
 .save-mini {
     background: #e3f2fd;
     color: #0288d1;
-}
-
-.save-mini:hover {
-    background: #d0e8fb;
-}
-
-/* DELETE BUTTON (soft red) */
-.delete-mini {
-    background: #fdecea;
-    color: #e74c3c;
-}
-
-.delete-mini:hover {
-    background: #f9d6d2;
-}
-
-/* REPORT BUTTONS CONTAINER */
-.report-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 12px;
-
-    /* CENTER EVERYTHING */
-    align-items: center;
-}
-
-/* AESTHETIC REPORT BUTTON */
-.download-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 80%;              /* wider but still elegant */
-    max-width: 150px;        /* keeps it neat inside card */
-
-    padding: 10px 14px;
-    border-radius: 14px;     /* softer, cuter corners */
-
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-
-    text-decoration: none;
-    color: #2c3e50;          /* soft dark text */
-
-    /* 💡 soft pastel aqua theme */
-    background: linear-gradient(135deg, #dff6ff, #cfefff);
-
-    border: 1px solid rgba(2, 136, 209, 0.15);
-
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.06);
-
-    transition: all 0.25s ease;
-}
-
-/* HOVER EFFECT (smooth & modern) */
-.download-btn:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0px 8px 18px rgba(2, 136, 209, 0.15);
-    background: linear-gradient(135deg, #cfefff, #bfe9ff);
-}
-
-/* CLICK EFFECT */
-.download-btn:active {
-    transform: scale(0.98);
-}
-
-/* REPORT CARD ALIGNMENT */
-.report-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* BUTTON CONTAINER */
-.report-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
-    align-items: center;
-}
-
-/* SMALL AESTHETIC BUTTON (MATCHING CARD STYLE) */
-.report-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 110px;              /* 🔥 SMALLER */
-    padding: 6px 10px;         /* compact */
-
-    border-radius: 10px;       /* matches card softness */
-
-    font-size: 12px;
-    font-weight: 500;
-
-    text-decoration: none;
-
-    color: #2c3e50;
-
-    background: linear-gradient(135deg, #eaf6ff, #d9f2ff);
-
-    border: 1px solid rgba(2, 136, 209, 0.15);
-
-    box-shadow: 0px 3px 8px rgba(0,0,0,0.05);
-
-    transition: all 0.2s ease;
-}
-
-/* HOVER */
-.report-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 6px 14px rgba(2, 136, 209, 0.12);
-    background: linear-gradient(135deg, #d9f2ff, #c9ecff);
-}
-
-/* CLICK */
-.report-btn:active {
-    transform: scale(0.97);
 }
 
 /* REPORT BUTTONS */
@@ -420,14 +212,12 @@ tr:hover {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 10px;
     align-items: center;
 }
 
-/* SMALL AESTHETIC BUTTONS */
 .report-btn {
-    width: 120px;
-    padding: 6px 10px;
+    width: 110px;
+    padding: 6px;
     border-radius: 10px;
     font-size: 12px;
     text-align: center;
@@ -437,77 +227,46 @@ tr:hover {
     color: #2c3e50;
 
     border: 1px solid rgba(2, 136, 209, 0.15);
-    transition: 0.2s ease;
+    transition: 0.2s;
 }
 
 .report-btn:hover {
     transform: translateY(-2px);
 }
 
-/* 🔹 ICON INPUT WRAPPER */
-.input-icon {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-/* 🔹 ICON STYLE */
-.input-icon i {
-    position: absolute;
-    left: 8px;
-    font-size: 12px;
-    color: rgba(60, 60, 60, 0.5);
-}
-
-/* 🔹 INPUT + SELECT WITH ICON SPACE */
-.input-icon input,
-.input-icon select {
-    padding-left: 26px; /* space for icon */
-}
-
-/* 🔹 make selects match inputs better */
-.input-icon select {
-    appearance: none;
-}
-
-./* Dropdown container spacing */
+/* 🔥 DROPDOWN (FIXED CLEAN VERSION) */
 .dropdown-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
     padding-left: 10px;
-    margin-top: 5px;
 }
 
-/* Each sample row */
+.dropdown.active .dropdown-content {
+    max-height: 300px;
+}
+
+/* ARROW */
+.arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.dropdown.active .arrow {
+    transform: rotate(180deg);
+}
+
+/* SAMPLE LINKS */
 .sample-link {
     display: flex;
     align-items: center;
     gap: 8px;
-
     padding: 6px 10px;
-    margin: 3px 0;
-
     font-size: 13px;
-    text-decoration: none;
-
     border-radius: 6px;
-
-    transition: 0.2s ease;
+    transition: 0.2s;
 }
 
-/* Icon */
-.sample-icon {
-    font-size: 12px;
-    opacity: 0.8;
-}
-
-/* Text */
-.sample-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Hover (subtle, keeps your theme) */
 .sample-link:hover {
     transform: translateX(3px);
-    opacity: 0.9;
 }

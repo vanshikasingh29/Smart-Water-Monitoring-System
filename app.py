@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, Response
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask import make_response
+from datetime import datetime, timedelta
 import json, os, pdfkit
 
 app = Flask(__name__)
@@ -150,6 +151,72 @@ def dashboard():
         status_ok=status_ok
     )
 
+
+# ---------------- VIEW CHARTS ----------------
+@app.route("/charts")
+@login_required
+def charts():
+    data = read_data()
+    history = data["history"]
+
+    one_week_ago = datetime.now() - timedelta(days=7)
+    filtered = []
+
+    for item in history:
+        time_str = item.get("time")
+
+        if not time_str:
+            continue
+
+        try:
+            t = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+        except:
+            continue
+
+        if t >= one_week_ago:
+            filtered.append(item)
+
+    return render_template("charts.html", history=history)
+
+# ---------------- MONTHLY CHART PAGE ----------------
+@app.route("/monthly-charts")
+@login_required
+def monthly_charts():
+    data = read_data()
+    history = data["history"]
+
+    one_month_ago = datetime.now() - timedelta(days=30)
+    monthly_data = []
+
+    for item in history:
+        time_str = item.get("time")
+
+        if not time_str:
+            continue
+
+        try:
+            t = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+        except:
+            continue
+
+        if t >= one_month_ago:
+            monthly_data.append(item)
+
+    return render_template("monthly_charts.html", history=history)
+
+# ---------------- SENSOR CHARTS PAGE ----------------
+@app.route("/sensor-charts")
+@login_required
+def sensor_charts():
+    samples_file = "samples.json"
+
+    if os.path.exists(samples_file):
+        with open(samples_file, "r") as f:
+            samples = json.load(f).get("samples", [])
+    else:
+        samples = []
+
+    return render_template("sensor_charts.html", samples=samples)
 
 # ---------------- VIEW SAMPLE ----------------
 @app.route("/sample/<name>")

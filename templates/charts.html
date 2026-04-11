@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h2 style="text-align:center;">📊 Weekly Water Monitoring</h2>
+
+<canvas id="myChart"></canvas>
+
+<script>
+const rawData = {{ history | tojson | safe }} || [];
+
+console.log("Chart Data:", rawData);
+
+if (!rawData || rawData.length === 0) {
+    document.body.innerHTML += "<p style='color:red;text-align:center;'>No data available</p>";
+} else {
+
+    const labels = rawData.map(d => d.timestamp || d.time || "N/A");
+
+    const ph = rawData.map(d => d.ph || 0);
+    const turbidity = rawData.map(d => d.turbidity || 0);
+    const temperature = rawData.map(d => d.temperature || 0);
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                { label: 'pH', data: ph, borderColor: 'blue' },
+                { label: 'Turbidity', data: turbidity, borderColor: 'green' },
+                { label: 'Temperature', data: temperature, borderColor: 'red' }
+            ]
+        }
+    });
+}
+</script>
+
+</body>
+</html>
