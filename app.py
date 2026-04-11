@@ -176,7 +176,20 @@ def charts():
         if t >= one_week_ago:
             filtered.append(item)
 
-    return render_template("charts.html", history=history)
+    # LOAD SAMPLES (IMPORTANT FOR SIDEBAR)
+    samples_file = "samples.json"
+    if os.path.exists(samples_file):
+        with open(samples_file, "r") as f:
+            samples = json.load(f).get("samples", [])
+    else:
+        samples = []
+
+    return render_template(
+        "charts.html",
+        history=history,
+        samples=samples,
+        is_admin=current_user.is_admin()
+    )
 
 # ---------------- MONTHLY CHART PAGE ----------------
 @app.route("/monthly-charts")
@@ -202,7 +215,20 @@ def monthly_charts():
         if t >= one_month_ago:
             monthly_data.append(item)
 
-    return render_template("monthly_charts.html", history=history)
+    samples_file = "samples.json"
+    if os.path.exists(samples_file):
+        with open(samples_file, "r") as f:
+            samples = json.load(f).get("samples", [])
+    else:
+        samples = []
+
+    return render_template(
+        "monthly_charts.html",
+        history=history,
+        samples=samples,
+        is_admin=current_user.is_admin()
+    )
+
 
 # ---------------- SENSOR CHARTS PAGE ----------------
 @app.route("/sensor-charts")
@@ -216,8 +242,11 @@ def sensor_charts():
     else:
         samples = []
 
-    return render_template("sensor_charts.html", samples=samples)
-
+    return render_template(
+    "sensor_charts.html",
+    samples=samples,
+    is_admin=current_user.is_admin()
+    )
 # ---------------- VIEW SAMPLE ----------------
 @app.route("/sample/<name>")
 @login_required

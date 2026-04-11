@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>Sensor Comparison</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -15,7 +18,6 @@
             margin-bottom: 30px;
         }
 
-        /* 🔥 ROW LAYOUT */
         .chart-row {
             display: flex;
             justify-content: space-between;
@@ -25,7 +27,6 @@
             margin: auto;
         }
 
-        /* 🔥 BIGGER CARDS */
         .chart-box {
             flex: 1;
             min-width: 320px;
@@ -35,8 +36,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             text-align: center;
             transition: 0.3s;
-
-            /* IMPORTANT: makes charts bigger */
             height: 420px;
         }
 
@@ -44,15 +43,83 @@
             transform: translateY(-5px);
         }
 
-        /* 🔥 BIG CANVAS */
         canvas {
             width: 100% !important;
             height: 320px !important;
+        }
+
+        /* IMPORTANT so sidebar works like dashboard */
+        .main {
+            margin-left: 180px;
+            padding: 20px;
         }
     </style>
 </head>
 
 <body>
+
+<!-- ================= SIDEBAR (EXACT SAME AS DASHBOARD) ================= -->
+<div class="sidebar">
+
+    <div class="sidebar-logo">
+        <span class="icon-stack">
+            <i class="fas fa-shield"></i>
+            <i class="fas fa-tint"></i>
+        </span>
+        <h2>AquaGuard</h2>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dropdown">
+        <a href="{{ url_for('dashboard') }}" class="dropdown-toggle">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+            {% if samples %}<i class="fas fa-angle-down arrow"></i>{% endif %}
+        </a>
+
+        {% if samples %}
+        <div class="dropdown-content">
+            {% for s in samples %}
+            <a class="sample-link" href="{{ url_for('view_sample', name=s.name) }}">
+                <i class="fas fa-vial sample-icon"></i>
+                <span class="sample-text">{{ s.name }}</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
+
+    <!-- Charts -->
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-chart-line"></i> Charts
+            <i class="fas fa-angle-down arrow"></i>
+        </a>
+
+        <div class="dropdown-content">
+            <a href="{{ url_for('charts') }}">Weekly Charts</a>
+            <a href="{{ url_for('monthly_charts') }}">Monthly Charts</a>
+            <a href="{{ url_for('sensor_charts') }}">Sensor Charts</a>
+        </div>
+    </div>
+
+    {% if is_admin %}
+    <a href="{{ url_for('manage_users') }}"><i class="fas fa-users"></i> Users</a>
+    {% endif %}
+
+    <div class="logout">
+        <a href="#" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+</div>
+<!-- ================= END SIDEBAR ================= -->
+
+
+<!-- ================= MAIN ================= -->
+<div class="main">
 
 <h2>📊 Sensor Comparison Across Samples</h2>
 
@@ -75,7 +142,39 @@
 
 </div>
 
+</div>
+
+<!-- ================= SCRIPTS ================= -->
 <script>
+
+function toggleDropdown(e) {
+    e.preventDefault();
+
+    const dropdown = e.currentTarget.parentElement;
+
+    document.querySelectorAll('.dropdown').forEach(d => {
+        if (d !== dropdown) d.classList.remove('active');
+    });
+
+    dropdown.classList.toggle('active');
+}
+
+document.addEventListener("click", function(e) {
+    if (!e.target.closest(".dropdown")) {
+        document.querySelectorAll('.dropdown').forEach(d => {
+            d.classList.remove('active');
+        });
+    }
+});
+
+function confirmLogout() {
+    if(confirm("Are you sure you want to logout?")) {
+        window.location.href="{{ url_for('logout') }}";
+    }
+}
+
+
+// ================= CHART DATA =================
 const samples = {{ samples | tojson | safe }};
 
 if (!samples || samples.length === 0) {
@@ -88,7 +187,6 @@ if (!samples || samples.length === 0) {
     const ph = samples.map(s => s.current.ph);
     const turbidity = samples.map(s => s.current.turbidity);
 
-    // 🔥 TEMPERATURE CHART
     new Chart(document.getElementById('tempChart'), {
         type: 'line',
         data: {
@@ -98,17 +196,12 @@ if (!samples || samples.length === 0) {
                 data: temperature,
                 borderColor: 'red',
                 backgroundColor: 'rgba(255,0,0,0.1)',
-                tension: 0.4,   // ✅ SMOOTH CURVE ADDED
+                tension: 0.4,
                 fill: true
             }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
         }
     });
 
-    // 🔥 PH CHART
     new Chart(document.getElementById('phChart'), {
         type: 'line',
         data: {
@@ -118,17 +211,12 @@ if (!samples || samples.length === 0) {
                 data: ph,
                 borderColor: 'green',
                 backgroundColor: 'rgba(0,128,0,0.1)',
-                tension: 0.4,   // ✅ SMOOTH CURVE ADDED
+                tension: 0.4,
                 fill: true
             }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
         }
     });
 
-    // 🔥 TURBIDITY CHART
     new Chart(document.getElementById('turbidityChart'), {
         type: 'line',
         data: {
@@ -138,17 +226,14 @@ if (!samples || samples.length === 0) {
                 data: turbidity,
                 borderColor: 'blue',
                 backgroundColor: 'rgba(0,0,255,0.1)',
-                tension: 0.4,   // ✅ SMOOTH CURVE ADDED
+                tension: 0.4,
                 fill: true
             }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
         }
     });
 
 }
+
 </script>
 
 </body>

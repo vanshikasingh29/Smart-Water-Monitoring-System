@@ -2,18 +2,117 @@
 <html>
 <head>
     <title>Charts</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-<h2 style="text-align:center;">📊 Weekly Water Monitoring</h2>
+<!-- ================= SIDEBAR (EXACT DASHBOARD COPY) ================= -->
+<div class="sidebar">
 
-<canvas id="myChart"></canvas>
+    <div class="sidebar-logo">
+        <span class="icon-stack">
+            <i class="fas fa-shield"></i>
+            <i class="fas fa-tint"></i>
+        </span>
+        <h2>AquaGuard</h2>
+    </div>
 
+    <!-- Dashboard dropdown -->
+    <div class="dropdown">
+        <a href="{{ url_for('dashboard') }}" class="dropdown-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+            {% if samples %}<i class="fas fa-angle-down arrow"></i>{% endif %}
+        </a>
+
+        {% if samples %}
+        <div class="dropdown-content">
+            {% for s in samples %}
+            <a class="sample-link" href="{{ url_for('view_sample', name=s.name) }}">
+                <i class="fas fa-vial sample-icon"></i>
+                <span class="sample-text">{{ s.name }}</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- History -->
+    <a href="{{ url_for('history') }}">
+        <i class="fas fa-history"></i> History
+    </a>
+
+    <!-- Charts dropdown -->
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-chart-line"></i> Charts
+            <i class="fas fa-angle-down arrow"></i>
+        </a>
+
+        <div class="dropdown-content">
+            <a href="{{ url_for('charts') }}">Weekly Charts</a>
+            <a href="{{ url_for('monthly_charts') }}">Monthly Charts</a>
+            <a href="{{ url_for('sensor_charts') }}">Sensor Charts</a>
+        </div>
+    </div>
+
+    <!-- USERS -->
+    {% if is_admin %}
+    <a href="{{ url_for('manage_users') }}">
+        <i class="fas fa-users"></i> Users
+    </a>
+    {% endif %}
+
+    <!-- Logout -->
+    <div class="logout">
+        <a href="#" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+</div>
+<!-- ================= END SIDEBAR ================= -->
+
+
+<!-- ================= MAIN ================= -->
+<div class="main">
+
+    <h2 style="text-align:center;">📊 Weekly Water Monitoring</h2>
+
+    <canvas id="myChart"></canvas>
+
+</div>
+
+
+<!-- ================= SCRIPT ================= -->
 <script>
-const rawData = {{ history | tojson | safe }} || [];
 
-console.log("Chart Data:", rawData);
+function toggleDropdown(event) {
+    event.preventDefault();
+
+    const parent = event.currentTarget.parentElement;
+    parent.classList.toggle("active");
+}
+
+document.addEventListener("click", function(e) {
+    if (!e.target.closest(".dropdown")) {
+        document.querySelectorAll('.dropdown').forEach(d => {
+            d.classList.remove('active');
+        });
+    }
+});
+
+function confirmLogout() {
+    if(confirm("Are you sure you want to logout?")) {
+        window.location.href="{{ url_for('logout') }}";
+    }
+}
+
+// ================= CLEAN CHART (ONLY ONE) =================
+const rawData = {{ history | tojson | safe }} || [];
 
 if (!rawData || rawData.length === 0) {
     document.body.innerHTML += "<p style='color:red;text-align:center;'>No data available</p>";
@@ -25,20 +124,31 @@ if (!rawData || rawData.length === 0) {
     const turbidity = rawData.map(d => d.turbidity || 0);
     const temperature = rawData.map(d => d.temperature || 0);
 
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {
+    new Chart(document.getElementById('myChart'), {
         type: 'line',
         data: {
             labels: labels,
             datasets: [
-                { label: 'pH', data: ph, borderColor: 'blue' },
-                { label: 'Turbidity', data: turbidity, borderColor: 'green' },
-                { label: 'Temperature', data: temperature, borderColor: 'red' }
+                {
+                    label: 'pH',
+                    data: ph,
+                    borderColor: 'blue'
+                },
+                {
+                    label: 'Turbidity',
+                    data: turbidity,
+                    borderColor: 'green'
+                },
+                {
+                    label: 'Temperature',
+                    data: temperature,
+                    borderColor: 'red'
+                }
             ]
         }
     });
 }
+
 </script>
 
 </body>

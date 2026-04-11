@@ -153,6 +153,7 @@
 <body>
 
 <div class="sidebar">
+
     <div class="sidebar-logo">
         <span class="icon-stack">
             <i class="fas fa-shield"></i>
@@ -161,16 +162,44 @@
         <h2>AquaGuard</h2>
     </div>
 
-    <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-    <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
+    <!-- Dashboard -->
+    <a href="{{ url_for('dashboard') }}">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+    </a>
 
+    <!-- History -->
+    <a href="{{ url_for('history') }}">
+        <i class="fas fa-history"></i> History
+    </a>
+
+    <!-- Charts dropdown (MISSING BEFORE → NOW FIXED) -->
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-chart-line"></i> Charts
+            <i class="fas fa-angle-down arrow"></i>
+        </a>
+
+        <div class="dropdown-content">
+            <a href="{{ url_for('charts') }}">Weekly Charts</a>
+            <a href="{{ url_for('monthly_charts') }}">Monthly Charts</a>
+            <a href="{{ url_for('sensor_charts') }}">Sensor Charts</a>
+        </div>
+    </div>
+
+    <!-- Users -->
     {% if current_user.is_admin() %}
-    <a href="{{ url_for('manage_users') }}"><i class="fas fa-users"></i> Users</a>
+    <a href="{{ url_for('manage_users') }}">
+        <i class="fas fa-users"></i> Users
+    </a>
     {% endif %}
 
+    <!-- Logout -->
     <div class="logout">
-        <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="#" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
     </div>
+
 </div>
 
 <div class="main">
@@ -259,6 +288,22 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 function confirmLogout() {
     if (confirm("Are you sure you want to logout?")) {
         window.location.href = "{{ url_for('logout') }}";
+    }
+}
+</script>
+
+<script>
+function toggleDropdown(event) {
+    event.preventDefault();
+
+    const parent = event.currentTarget.parentElement;
+    const dropdown = parent.querySelector(".dropdown-content");
+
+    // toggle visibility
+    if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+    } else {
+        dropdown.style.display = "block";
     }
 }
 </script>
