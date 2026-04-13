@@ -3,6 +3,10 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask import make_response
 from datetime import datetime, timedelta
 import json, os, pdfkit
+import base64
+import io
+import matplotlib.pyplot as plt
+
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
@@ -72,6 +76,35 @@ def get_system_status(data):
     return "OPERATIONAL", True
 
 
+# ---------------- CHART GENERATOR ----------------
+def generate_chart_image(data):
+    if not data:
+        return None, None, None
+
+    labels = [d["time"] for d in data]
+    ph = [d["ph"] for d in data]
+    turbidity = [d["turbidity"] for d in data]
+    temperature = [d["temperature"] for d in data]
+
+    def make_chart(values, title, color):
+        plt.figure(figsize=(6,3))
+        plt.plot(labels, values, color=color)
+        plt.title(title)
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+
+        img = io.BytesIO()
+        plt.savefig(img, format='png')
+        plt.close()
+        img.seek(0)
+
+        return base64.b64encode(img.getvalue()).decode()
+
+    return (
+        make_chart(ph, "pH Levels", "blue"),
+        make_chart(temperature, "Temperature", "red"),
+        make_chart(turbidity, "Turbidity", "green")
+    )
 # ---------------- LOGIN ----------------
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -439,19 +472,74 @@ def download_report():
 
     report_type = request.args.get("report_type")
 
+    data = read_data()
+    history = data.get("history", [])
+    alerts = data.get("notifications", [])
+
+    # LOAD SAMPLES
+    samples_file = "samples.json"
+    if os.path.exists(samples_file):
+        with open(samples_file, "r") as f:
+            samples = json.load(f).get("samples", [])
+    else:
+        samples = []
+
+    now = datetime.now()
+
+    # ---------------- FILTER DATA ----------------
     if report_type == "weekly":
+        filtered = [
+            d for d in history
+            if datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") >= now - timedelta(days=7)
+        ]
         template = "weekly_report.html"
+        chart_title = "Weekly Water Trends"
         filename = "weekly_report.pdf"
 
     elif report_type == "monthly":
+        filtered = [
+            d for d in history
+            if datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") >= now - timedelta(days=30)
+        ]
         template = "monthly_report.html"
+        chart_title = "Monthly Water Trends"
         filename = "monthly_report.pdf"
+
     else:
         return "Invalid report type"
 
-    data = read_data()
+    # ---------------- MAIN CHART ----------------
+    ph_chart, temp_chart, turb_chart = generate_chart_image(filtered)
+    # ---------------- SENSOR CHART ----------------
+    sensor_chart = None
+    if samples:
+        labels = [s["name"] for s in samples]
+        temp = [s["current"]["temperature"] for s in samples]
 
-    rendered = render_template(template, data=data)
+        plt.figure(figsize=(6,3))
+        plt.plot(labels, temp)
+        plt.title("Sensor Temperature Comparison")
+        plt.tight_layout()
+
+        img = io.BytesIO()
+        plt.savefig(img, format='png')
+        plt.close()
+        img.seek(0)
+
+        sensor_chart = base64.b64encode(img.getvalue()).decode()
+
+    # ---------------- MAP SNAPSHOT ----------------
+    #map_url = "https://static-maps.yandex.ru/1.x/?ll=-1.5491,53.8008&size=450,250&z=10&l=map"
+
+    rendered = render_template(
+    template,
+    data=filtered,
+    alerts=alerts,
+    samples=samples,
+    ph_chart=ph_chart,
+    temp_chart=temp_chart,
+    turb_chart=turb_chart
+)
 
     config = pdfkit.configuration(
         wkhtmltopdf=r"C:\Users\unkno\.vscode\Smart-Water-Monitoring-System\wkhtmltopdf\bin\wkhtmltopdf.exe"
@@ -464,7 +552,6 @@ def download_report():
         mimetype="application/pdf",
         headers={"Content-Disposition": f"attachment;filename={filename}"}
     )
-
 
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
