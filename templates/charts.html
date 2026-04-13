@@ -118,7 +118,11 @@ if (!rawData || rawData.length === 0) {
     document.body.innerHTML += "<p style='color:red;text-align:center;'>No data available</p>";
 } else {
 
-    const labels = rawData.map(d => d.timestamp || d.time || "N/A");
+    const labels = rawData.map(d => {
+        if (!d.time) return "N/A";
+        const date = new Date(d.time);
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    });
 
     const ph = rawData.map(d => d.ph || 0);
     const turbidity = rawData.map(d => d.turbidity || 0);

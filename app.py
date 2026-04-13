@@ -192,24 +192,24 @@ def charts():
     data = read_data()
     history = data["history"]
 
-    one_week_ago = datetime.now() - timedelta(days=7)
+    # ✅ USE LATEST DATA TIME (NOT REAL TIME)
+    if history:
+        latest_time = max(datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") for d in history)
+    else:
+        latest_time = datetime.now()
+
+    one_week_ago = latest_time - timedelta(days=7)
+
     filtered = []
-
     for item in history:
-        time_str = item.get("time")
-
-        if not time_str:
-            continue
-
         try:
-            t = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+            t = datetime.strptime(item["time"], "%Y-%m-%d %H:%M:%S")
+            if t >= one_week_ago:
+                filtered.append(item)
         except:
             continue
 
-        if t >= one_week_ago:
-            filtered.append(item)
-
-    # LOAD SAMPLES (IMPORTANT FOR SIDEBAR)
+    # LOAD SAMPLES (for sidebar)
     samples_file = "samples.json"
     if os.path.exists(samples_file):
         with open(samples_file, "r") as f:
@@ -219,7 +219,7 @@ def charts():
 
     return render_template(
         "charts.html",
-        history=history,
+        history=filtered,  # ✅ FIXED
         samples=samples,
         is_admin=current_user.is_admin()
     )
@@ -484,62 +484,77 @@ def download_report():
     else:
         samples = []
 
-    now = datetime.now()
+    # ✅ USE LATEST DATA TIME
+    if history:
+        latest_time = max(datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") for d in history)
+    else:
+        latest_time = datetime.now()
 
-    # ---------------- FILTER DATA ----------------
+    # ---------------- FILTER ----------------
     if report_type == "weekly":
         filtered = [
             d for d in history
-            if datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") >= now - timedelta(days=7)
+            if datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") >= latest_time - timedelta(days=7)
         ]
-        template = "weekly_report.html"
-        chart_title = "Weekly Water Trends"
         filename = "weekly_report.pdf"
+        title = "📊 Weekly AquaGuard Report"
 
     elif report_type == "monthly":
         filtered = [
             d for d in history
-            if datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") >= now - timedelta(days=30)
+            if datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") >= latest_time - timedelta(days=30)
         ]
-        template = "monthly_report.html"
-        chart_title = "Monthly Water Trends"
         filename = "monthly_report.pdf"
+        title = "📊 Monthly AquaGuard Report"
 
     else:
         return "Invalid report type"
 
-    # ---------------- MAIN CHART ----------------
+    # ---------------- MAIN CHARTS ----------------
     ph_chart, temp_chart, turb_chart = generate_chart_image(filtered)
-    # ---------------- SENSOR CHART ----------------
-    sensor_chart = None
+
+    # ---------------- SENSOR CHARTS ----------------
+    sensor_ph = sensor_temp = sensor_turb = None
+
     if samples:
         labels = [s["name"] for s in samples]
-        temp = [s["current"]["temperature"] for s in samples]
 
-        plt.figure(figsize=(6,3))
-        plt.plot(labels, temp)
-        plt.title("Sensor Temperature Comparison")
-        plt.tight_layout()
+        ph_vals = [s["current"]["ph"] for s in samples]
+        temp_vals = [s["current"]["temperature"] for s in samples]
+        turb_vals = [s["current"]["turbidity"] for s in samples]
 
-        img = io.BytesIO()
-        plt.savefig(img, format='png')
-        plt.close()
-        img.seek(0)
+        def make_sensor_chart(values, title):
+            plt.figure(figsize=(6,3))
+            plt.plot(labels, values, marker='o')
+            plt.title(title)
+            plt.tight_layout()
 
-        sensor_chart = base64.b64encode(img.getvalue()).decode()
+            img = io.BytesIO()
+            plt.savefig(img, format='png')
+            plt.close()
+            img.seek(0)
 
-    # ---------------- MAP SNAPSHOT ----------------
-    #map_url = "https://static-maps.yandex.ru/1.x/?ll=-1.5491,53.8008&size=450,250&z=10&l=map"
+            return base64.b64encode(img.getvalue()).decode()
+
+        sensor_ph = make_sensor_chart(ph_vals, "pH Comparison")
+        sensor_temp = make_sensor_chart(temp_vals, "Temperature Comparison")
+        sensor_turb = make_sensor_chart(turb_vals, "Turbidity Comparison")
+
+    # ---------------- RENDER ----------------
+    template = "weekly_report.html" if report_type == "weekly" else "monthly_report.html"
 
     rendered = render_template(
     template,
+    title=title,
     data=filtered,
     alerts=alerts,
-    samples=samples,
     ph_chart=ph_chart,
     temp_chart=temp_chart,
-    turb_chart=turb_chart
-)
+    turb_chart=turb_chart,
+    sensor_ph=sensor_ph,
+    sensor_temp=sensor_temp,
+    sensor_turb=sensor_turb
+    )
 
     config = pdfkit.configuration(
         wkhtmltopdf=r"C:\Users\unkno\.vscode\Smart-Water-Monitoring-System\wkhtmltopdf\bin\wkhtmltopdf.exe"
@@ -552,7 +567,6 @@ def download_report():
         mimetype="application/pdf",
         headers={"Content-Disposition": f"attachment;filename={filename}"}
     )
-
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
 @login_required
