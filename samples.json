@@ -54,7 +54,6 @@
                 }
             ]
         },
-
         {
             "name": "Sample2",
             "current": {
@@ -72,9 +71,7 @@
                 {
                     "message": "low pH detected",
                     "time": "2026-03-02 11:00:00"
-                    
                 }
-
             ],
             "history": [
                 {
@@ -105,11 +102,8 @@
                     "risk": "HIGH",
                     "time": "2026-02-28 08:30:00"
                 }
-            
-
             ]
         },
-
         {
             "name": "Sample3",
             "current": {
@@ -127,7 +121,6 @@
                 {
                     "message": "turbitity slightly high",
                     "time": "2026-03-02 12:00:00"
-                    
                 }
             ],
             "history": [
@@ -161,7 +154,6 @@
                 }
             ]
         },
-
         {
             "name": "Sample4",
             "current": {
@@ -179,7 +171,6 @@
                 {
                     "message": "High turbidity warning",
                     "time": "2026-03-02 11:00:00"
-                    
                 }
             ],
             "history": [
@@ -215,4 +206,3 @@
         }
     ]
 }
-
