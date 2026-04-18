@@ -33,8 +33,27 @@
     {% endif %}
 </div>
 
+
     <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
+
+    <!-- Charts dropdown (MISSING BEFORE → NOW FIXED) -->
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-chart-line"></i> Charts
+            <i class="fas fa-angle-down arrow"></i>
+        </a>
+
+        <div class="dropdown-content">
+            <a href="{{ url_for('charts') }}">Weekly Charts</a>
+            <a href="{{ url_for('monthly_charts') }}">Monthly Charts</a>
+            <a href="{{ url_for('sensor_charts') }}">Sensor Charts</a>
+        </div>
+
     {% if current_user.is_admin() %}<a href="{{ url_for('manage_users') }}"><i class="fas fa-users"></i> Users</a>{% endif %}
+
+
+    </div>
+
 
     <div class="logout"><a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></div>
 </div>
@@ -70,20 +89,46 @@
 function confirmLogout() { if(confirm("Are you sure you want to logout?")) window.location.href="{{ url_for('logout') }}"; }
 
 const historyData = {{ sample.history|tojson }};
-const labels = historyData.map(i=>i.time);
-const phValues = historyData.map(i=>i.ph);
+const labels = historyData.map(i => i.time);
+
+const phValues = historyData.map(i => i.ph);
+const turbidityValues = historyData.map(i => i.turbidity);
+const tempValues = historyData.map(i => i.temperature);
 
 new Chart(document.getElementById('sampleChart'), {
-    type:'line',
-    data:{
-        labels:labels,
-        datasets:[{
-            label:'pH Level',
-            data:phValues,
-            borderColor:'#0288d1',
-            backgroundColor:'rgba(2,136,209,0.1)',
-            tension:0.4
-        }]
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'pH Level',
+                data: phValues,
+                borderColor: '#0288d1',
+                backgroundColor: 'rgba(2,136,209,0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Turbidity (NTU)',
+                data: turbidityValues,
+                borderColor: '#ff6f61',
+                backgroundColor: 'rgba(255,111,97,0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Temperature (°C)',
+                data: tempValues,
+                borderColor: '#7e57c2',
+                backgroundColor: 'rgba(126,87,194,0.1)',
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        interaction: {
+            mode: 'index',
+            intersect: false
+        }
     }
 });
 </script>

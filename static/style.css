@@ -120,12 +120,7 @@ h1 {
     border-bottom: 1px solid #eee;
 }
 
-/* DELETE */
-.delete-btn {
-    color: #e74c3c;
-    font-weight: bold;
-    text-decoration: none;
-}
+
 
 /* CHART */
 .chart {
@@ -274,4 +269,112 @@ tr:nth-child(even) {
 
 .sample-link:hover {
     transform: translateX(3px);
+}
+
+
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* TABLE HEADER (PINK STYLE) */
+th {
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+    color: rgb(248, 238, 238);
+    background: linear-gradient(135deg, #f7aad8, #fa9fbd);
+    border-bottom: none;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+tr:hover {
+    background: #fafcfe;
+}
+
+/* ROLE BADGES */
+.role-badge {
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.role-badge.admin {
+    background: rgba(2,136,209,0.1);
+    color: #0288d1;
+}
+
+.role-badge.user {
+    background: #f2f2f2;
+    color: #555;
+}
+
+/* ACTIONS */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.actions a {
+    white-space: nowrap;
+    display: inline-block;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* ROLE COLORS */
+.role-btn.promote {
+    color: #2ecc71;
+}
+
+.role-btn.demote {
+    color: #efa937;
+}
+
+/* DELETE */
+.delete-btn {
+    color: #e74c3c;
+    margin-left: auto;
+    padding-left: 16px;
+    border-left: 1px solid #eee;
+}
+
+/* HOVER */
+.role-btn:hover,
+.delete-btn:hover {
+    opacity: 0.7;
+    transition: 0.2s ease;
+}
+
+.flash-container {
+    margin: 15px 0;
+}
+
+.flash-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 12px 15px;
+    border-left: 5px solid #e74c3c;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
 }

@@ -18,17 +18,15 @@
         <h2>AquaGuard</h2>
     </div>
 
-    <!-- Dashboard -->
     <a href="{{ url_for('dashboard') }}">
         <i class="fas fa-tachometer-alt"></i> Dashboard
     </a>
 
-    <!-- History -->
     <a href="{{ url_for('history') }}">
         <i class="fas fa-history"></i> History
     </a>
 
-    <!-- Charts dropdown (MISSING BEFORE → NOW FIXED) -->
+    <!-- Charts Dropdown -->
     <div class="dropdown">
         <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
             <i class="fas fa-chart-line"></i> Charts
@@ -42,14 +40,12 @@
         </div>
     </div>
 
-    <!-- Users -->
     {% if current_user.is_admin() %}
     <a href="{{ url_for('manage_users') }}">
         <i class="fas fa-users"></i> Users
     </a>
     {% endif %}
 
-    <!-- Logout -->
     <div class="logout">
         <a href="#" onclick="confirmLogout()">
             <i class="fas fa-sign-out-alt"></i> Logout
@@ -59,21 +55,67 @@
 </div>
 
 <div class="main">
+
     <h1>User Management</h1>
+
+    <!-- 🔔 FLASH MESSAGES (POPUP AREA) -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-container">
+            {% for msg in messages %}
+                <div class="flash-message">{{ msg }}</div>
+            {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
     <table>
         <tr>
             <th>Username</th>
             <th>Role</th>
-            <th>Action</th>
+            <th>Actions</th>
         </tr>
 
         {% for user, info in users.items() %}
         <tr>
             <td>{{ user }}</td>
-            <td>{{ info.role }}</td>
+
             <td>
-                <a class="delete-btn" href="{{ url_for('delete_user', username=user) }}" onclick="return confirmDelete()">Delete</a>
+                {% if info.role == "admin" %}
+                    <span class="role-badge admin">Admin</span>
+                {% else %}
+                    <span class="role-badge user">User</span>
+                {% endif %}
+            </td>
+
+            <td class="actions">
+
+                <!-- PROMOTE / DEMOTE -->
+                {% if user != current_user.username %}
+                    {% if info.role == "admin" %}
+                        <a class="role-btn demote"
+                           href="{{ url_for('toggle_admin', username=user) }}"
+                           onclick="return confirm('Remove admin privileges from this user?')">
+                           Remove Admin
+                        </a>
+                    {% else %}
+                        <a class="role-btn promote"
+                           href="{{ url_for('toggle_admin', username=user) }}"
+                           onclick="return confirm('Make this user an admin?')">
+                           Make Admin
+                        </a>
+                    {% endif %}
+                {% endif %}
+
+                <!-- DELETE -->
+                {% if user != current_user.username %}
+                    <a class="delete-btn"
+                       href="{{ url_for('delete_user', username=user) }}"
+                       onclick="return confirmDelete()">
+                       Delete
+                    </a>
+                {% endif %}
+
             </td>
         </tr>
         {% endfor %}
@@ -88,16 +130,28 @@ function confirmLogout() {
 }
 
 function confirmDelete() {
-    return confirm("Are you sure you want to delete this?");
+    return confirm("Are you sure you want to delete this user?");
 }
 
-// ✅ ADD THIS
 function toggleDropdown(event) {
     event.preventDefault();
 
     const dropdown = event.currentTarget.parentElement;
-    dropdown.classList.toggle("active");
+
+    document.querySelectorAll('.dropdown').forEach(d => {
+        if (d !== dropdown) d.classList.remove('active');
+    });
+
+    dropdown.classList.toggle('active');
 }
+
+document.addEventListener("click", function(e) {
+    if (!e.target.closest(".dropdown")) {
+        document.querySelectorAll('.dropdown').forEach(d => {
+            d.classList.remove('active');
+        });
+    }
+});
 </script>
 
 </body>

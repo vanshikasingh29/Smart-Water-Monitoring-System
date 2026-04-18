@@ -12,7 +12,7 @@
             "alerts": [
                 {
                     "message": "High turbidity detected",
-                    "time": "2026-02-01 10:00:00"
+                    "time": "2026-03-01 10:00:00"
                 },
                 {
                     "message": "pH slightly high",
@@ -57,150 +57,162 @@
         {
             "name": "Sample2",
             "current": {
-                "ph": 6.3,
-                "temperature": 24.0,
-                "turbidity": 2.5,
+                "ph": 3.1,
+                "temperature": 21.5,
+                "turbidity": 6.0,
                 "risk": "SAFE",
-                "time": "2026-03-02 12:00:00"
+                "time": "2026-03-01 12:00:00"
             },
             "alerts": [
                 {
-                    "message": "rising temperature",
-                    "time": "2026-03-02 10:25:00"
+                    "message": "High turbidity detected",
+                    "time": "2026-03-01 10:00:00"
                 },
                 {
-                    "message": "low pH detected",
-                    "time": "2026-03-02 11:00:00"
+                    "message": "pH slightly high",
+                    "time": "2026-02-28 18:30:00"
+                },
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-03 10:00:00"
                 }
             ],
             "history": [
                 {
-                    "ph": 6.1,
-                    "temperature": 25,
-                    "turbidity": 3.9,
+                    "ph": 7.8,
+                    "temperature": 11,
+                    "turbidity": 3.2,
                     "risk": "HIGH",
-                    "time": "2026-03-03 10:00:00"
+                    "time": "2026-02-28 12:00:00"
                 },
                 {
-                    "ph": 6.4,
-                    "temperature": 21,
-                    "turbidity": 3.4,
+                    "ph": 9.5,
+                    "temperature": 34,
+                    "turbidity": 2.5,
                     "risk": "MEDIUM",
-                    "time": "2026-03-02 08:30:00"
+                    "time": "2026-02-28 08:00:00"
                 },
                 {
-                    "ph": 6.0,
-                    "temperature": 24,
-                    "turbidity": 2.4,
+                    "ph": 5.8,
+                    "temperature": 21,
+                    "turbidity": 2.2,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-21 12:00:00"
+                },
+                {
+                    "ph": 8.5,
+                    "temperature": 22,
+                    "turbidity": 5.5,
                     "risk": "LOW",
-                    "time": "2026-02-29 10:00:00"
-                },
-                {
-                    "ph": 6.3,
-                    "temperature": 23,
-                    "turbidity": 5.1,
-                    "risk": "HIGH",
-                    "time": "2026-02-28 08:30:00"
+                    "time": "2026-02-21 08:00:00"
                 }
             ]
         },
         {
             "name": "Sample3",
             "current": {
-                "ph": 7.3,
-                "temperature": 23.2,
-                "turbidity": 3.4,
+                "ph": 3.1,
+                "temperature": 12.5,
+                "turbidity": 5.0,
                 "risk": "SAFE",
-                "time": "2026-03-03 12:00:00"
+                "time": "2026-03-01 12:00:00"
             },
             "alerts": [
                 {
-                    "message": "stable condition",
-                    "time": "2026-03-02 12:25:00"
+                    "message": "High turbidity detected",
+                    "time": "2026-03-01 10:00:00"
                 },
                 {
-                    "message": "turbitity slightly high",
-                    "time": "2026-03-02 12:00:00"
+                    "message": "pH slightly high",
+                    "time": "2026-02-28 18:30:00"
+                },
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-03 10:00:00"
                 }
             ],
             "history": [
                 {
-                    "ph": 7.0,
+                    "ph": 6.8,
                     "temperature": 21,
-                    "turbidity": 3.0,
+                    "turbidity": 4.2,
                     "risk": "HIGH",
-                    "time": "2026-02-28 11:30:00"
+                    "time": "2026-02-28 12:00:00"
                 },
                 {
                     "ph": 7.5,
                     "temperature": 22,
-                    "turbidity": 3.6,
+                    "turbidity": 3.5,
                     "risk": "MEDIUM",
-                    "time": "2026-02-27 09:00:00"
+                    "time": "2026-02-28 08:00:00"
                 },
                 {
-                    "ph": 7.0,
+                    "ph": 5.8,
                     "temperature": 21,
-                    "turbidity": 3.7,
+                    "turbidity": 2.2,
                     "risk": "MEDIUM",
-                    "time": "2026-02-22 11:00:00"
+                    "time": "2026-02-21 12:00:00"
                 },
                 {
-                    "ph": 7.5,
+                    "ph": 8.5,
                     "temperature": 22,
-                    "turbidity": 3.2,
+                    "turbidity": 5.5,
                     "risk": "LOW",
-                    "time": "2026-02-25 08:00:00"
+                    "time": "2026-02-21 08:00:00"
                 }
             ]
         },
         {
             "name": "Sample4",
             "current": {
-                "ph": 7.0,
-                "temperature": 25.1,
-                "turbidity": 2.8,
+                "ph": 6.1,
+                "temperature": 29.5,
+                "turbidity": 5.0,
                 "risk": "SAFE",
-                "time": "2026-03-04 12:00:00"
+                "time": "2026-03-01 12:00:00"
             },
             "alerts": [
                 {
-                    "message": "pH slightly high",
-                    "time": "2026-03-02 11:50:00"
+                    "message": "High turbidity detected",
+                    "time": "2026-03-01 10:00:00"
                 },
                 {
-                    "message": "High turbidity warning",
-                    "time": "2026-03-02 11:00:00"
+                    "message": "pH slightly high",
+                    "time": "2026-02-28 18:30:00"
+                },
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-03 10:00:00"
                 }
             ],
             "history": [
                 {
                     "ph": 6.8,
-                    "temperature": 24,
-                    "turbidity": 4.0,
+                    "temperature": 21,
+                    "turbidity": 4.2,
                     "risk": "HIGH",
                     "time": "2026-02-28 12:00:00"
                 },
                 {
-                    "ph": 7.3,
+                    "ph": 7.5,
                     "temperature": 22,
-                    "turbidity": 3.2,
+                    "turbidity": 3.5,
                     "risk": "MEDIUM",
-                    "time": "2026-03-02 08:00:00"
+                    "time": "2026-02-28 08:00:00"
                 },
                 {
-                    "ph": 6.9,
-                    "temperature": 24,
-                    "turbidity": 2.9,
-                    "risk": "LOW",
-                    "time": "2026-03-01 12:00:00"
+                    "ph": 5.8,
+                    "temperature": 21,
+                    "turbidity": 2.2,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-21 12:00:00"
                 },
                 {
-                    "ph": 7.6,
+                    "ph": 8.5,
                     "temperature": 22,
-                    "turbidity": 2.7,
+                    "turbidity": 5.5,
                     "risk": "LOW",
-                    "time": "2026-03-01 08:00:00"
+                    "time": "2026-02-21 08:00:00"
                 }
             ]
         }

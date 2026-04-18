@@ -150,7 +150,7 @@
     </section>
 
     <section class="chart">
-        <h2>pH Trend</h2>
+        <h2>Hourly Trend</h2>
         <canvas id="myChart"></canvas>
     </section>
 
@@ -190,18 +190,43 @@ function confirmDelete() {
 const historyData = {{ history|tojson }};
 const labels = historyData.map(i=>i.time);
 const phValues = historyData.map(i=>i.ph);
+const turbidityValues = historyData.map(i => i.turbidity);
+const tempValues = historyData.map(i => i.temperature);
 
 new Chart(document.getElementById('myChart'), {
-    type:'line',
-    data:{
-        labels:labels,
-        datasets:[{
-            label:'pH Level',
-            data:phValues,
-            borderColor:'#0288d1',
-            backgroundColor:'rgba(2,136,209,0.1)',
-            tension:0.4
-        }]
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'pH Level',
+                data: phValues,
+                borderColor: '#0288d1',
+                backgroundColor: 'rgba(2,136,209,0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Turbidity (NTU)',
+                data: turbidityValues,
+                borderColor: '#ff6f61',
+                backgroundColor: 'rgba(255,111,97,0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Temperature (°C)',
+                data: tempValues,
+                borderColor: '#7e57c2',
+                backgroundColor: 'rgba(126,87,194,0.1)',
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        interaction: {
+            mode: 'index',
+            intersect: false
+        }
     }
 });
 </script>

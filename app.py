@@ -2,10 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, Response
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask import make_response
 from datetime import datetime, timedelta
+from flask import flash
 import json, os, pdfkit
 import base64
 import io
 import matplotlib.pyplot as plt
+
 
 
 app = Flask(__name__)
@@ -436,11 +438,49 @@ def delete_user(username):
     if not current_user.is_admin():
         return redirect(url_for("dashboard"))
 
+    # ❌ PREVENT SELF-DELETE (IMPORTANT FIX)
+    if username == current_user.id:
+        return "You cannot delete your own account", 403
+
     users = read_users()
 
     if username in users:
         del users[username]
         save_users(users)
+
+    return redirect(url_for("manage_users"))
+
+@app.route('/admin/toggle_admin/<username>')
+@login_required
+def toggle_admin(username):
+    if not current_user.is_admin():
+        return "Unauthorized", 403
+
+    users = read_users()
+
+    if username not in users:
+        flash("User not found.")
+        return redirect(url_for("manage_users"))
+
+    # Count admins
+    admin_count = sum(1 for u in users.values() if u.get("role") == "admin")
+
+    current_role = users[username].get("role")
+
+    # 🚨 BLOCK LAST ADMIN REMOVAL
+    if current_role == "admin" and admin_count == 1:
+        flash("You cannot remove the last admin. Promote another user first.")
+        return redirect(url_for("manage_users"))
+
+    # Toggle role
+    if current_role == "admin":
+        users[username]["role"] = "user"
+        flash(f"{username} is no longer an admin.")
+    else:
+        users[username]["role"] = "admin"
+        flash(f"{username} is now an admin.")
+
+    save_users(users)
 
     return redirect(url_for("manage_users"))
 
