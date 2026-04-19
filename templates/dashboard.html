@@ -79,25 +79,30 @@
         </div>
     </div>
 
-    {% if is_admin %}
-    <a href="{{ url_for('manage_users') }}"><i class="fas fa-users"></i> Users</a>
+     <!-- USERS (ADMIN ONLY) -->
+    {% if current_user.is_authenticated and current_user.is_admin() %}
+    <a href="{{ url_for('manage_users') }}">
+        <i class="fas fa-users"></i> Users
+    </a>
     {% endif %}
 
-
-    <!-- SUPPORT LINK (ADD THIS IF NOT ALREADY) -->
+    <!-- SUPPORT -->
     <a href="{{ url_for('support') }}">
         <i class="fas fa-headset"></i> Support
     </a>
 
-    <a href="{{ url_for('admin_support') if current_user.is_admin() else url_for('support') }}" class="support-link">
+    <!-- MESSAGES (ADMIN ONLY) -->
+{% if current_user.is_authenticated and current_user.is_admin() %}
+<a href="{{ url_for('admin_support') }}" class="support-link">
     <i class="fas fa-life-ring"></i> Messages
 
-    {% if new_support > 0 %}
+    {% if new_support is defined and new_support > 0 %}
         <span class="notif-badge">{{ new_support }}</span>
     {% endif %}
 </a>
+{% endif %}
 
-
+    
     <div class="logout">
         <a href="#" onclick="confirmLogout()">
             <i class="fas fa-sign-out-alt"></i> Logout
