@@ -345,7 +345,7 @@ tr:hover {
 
 /* DELETE */
 .delete-btn {
-    color: #e74c3c;
+    color: #f0311b;
     margin-left: auto;
     padding-left: 16px;
     border-left: 1px solid #eee;
@@ -377,4 +377,22 @@ tr:hover {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-6px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    background: #ff4586;
+    color: white;
+    cursor: pointer;
 }

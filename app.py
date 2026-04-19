@@ -64,6 +64,29 @@ def read_data():
         return json.load(f)
 
 
+
+# =========================
+# 🆕 SUPPORT SYSTEM
+# =========================
+def read_support():
+    if not os.path.exists("support.json"):
+        with open("support.json", "w") as f:
+            json.dump({"messages": []}, f, indent=4)
+    with open("support.json", "r") as f:
+        return json.load(f)
+
+
+def save_support(data):
+    with open("support.json", "w") as f:
+        json.dump(data, f, indent=4)
+
+#---------------- GLOBAL SUPPORT NOTIFICATION BADGE ----------------
+@app.context_processor
+def inject_support_notifications():
+    data = read_support()
+    new_support = sum(1 for m in data.get("messages", []) if m.get("status") == "new")
+    return dict(new_support=new_support)
+
 # ---------------- SYSTEM STATUS ----------------
 def get_system_status(data):
     required_keys = ["ph", "turbidity", "temperature"]
@@ -152,6 +175,70 @@ def register():
     return render_template("register.html")
 
 
+
+@app.route("/support", methods=["GET", "POST"])
+@login_required
+def support():
+    data = read_support()
+
+    if request.method == "POST":
+        message = request.form["message"]
+
+        new_msg = {
+            "user": current_user.id,
+            "message": message,
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "status": "new"
+        }
+
+        data["messages"].append(new_msg)
+        save_support(data)
+
+        flash("Message sent!")
+        return redirect(url_for("support"))
+
+    return render_template(
+        "support.html",
+        is_admin=current_user.is_admin()
+    )
+# =========================
+# 🆕 ADMIN SUPPORT DASHBOARD
+# =========================
+@app.route("/admin/support")
+@login_required
+def admin_support():
+    if not current_user.is_admin():
+        return redirect(url_for("dashboard"))
+
+    data = read_support()
+
+    new_count = sum(1 for m in data["messages"] if m["status"] == "new")
+
+    return render_template(
+        "admin_support.html",
+        messages=data["messages"],
+        new_count=new_count,
+        is_admin=True
+    )
+
+# =========================
+# 🆕 MARK AS READ
+# =========================
+@app.route("/admin/mark_read/<int:index>")
+@login_required
+def mark_read(index):
+    if not current_user.is_admin():
+        return redirect(url_for("dashboard"))
+
+    data = read_support()
+
+    # ✅ REMOVE MESSAGE INSTEAD OF MARKING
+    if 0 <= index < len(data["messages"]):
+        data["messages"].pop(index)
+
+    save_support(data)
+
+    return redirect(url_for("admin_support"))
 # ---------------- DASHBOARD ----------------
 @app.route("/dashboard")
 @login_required
@@ -164,7 +251,11 @@ def dashboard():
 
     status_text, status_ok = get_system_status(data)
 
-    # ✅ LOAD SAMPLES (THIS IS THE FIX)
+    # ✅ ADD THIS (support notifications count)
+   # support_data = read_support()
+    #new_support = sum(1 for m in support_data["messages"] if m["status"] == "new")
+
+    # LOAD SAMPLES
     samples_file = "samples.json"
     if os.path.exists(samples_file):
         with open(samples_file, "r") as f:
@@ -177,15 +268,15 @@ def dashboard():
         current=data["current"],
         alerts=data["notifications"],
         history=data["history"],
-        samples=samples,  # ✅ IMPORTANT
+        samples=samples,
         is_admin=current_user.is_admin(),
         username=current_user.id,
         alerts_today=alerts_today,
         total_users=total_users,
         status_text=status_text,
         status_ok=status_ok
+       # new_support=new_support  # ✅ IMPORTANT
     )
-
 
 # ---------------- VIEW CHARTS ----------------
 @app.route("/charts")

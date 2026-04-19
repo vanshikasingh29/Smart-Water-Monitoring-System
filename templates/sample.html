@@ -6,7 +6,31 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .support-link {
+    position: relative;
+}
+
+.notif-badge {
+    position: absolute;
+    top: 6px;
+    right: 12px;
+
+    background: #ff3b6b;
+    color: white;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    padding: 2px 6px;
+    border-radius: 50px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+</style>
 </head>
+
 <body>
 
 <div class="sidebar">
@@ -54,6 +78,19 @@
 
     </div>
 
+
+     <!-- SUPPORT LINK (ADD THIS IF NOT ALREADY) -->
+    <a href="{{ url_for('support') }}">
+        <i class="fas fa-headset"></i> Support
+    </a>
+
+    <a href="{{ url_for('admin_support') if current_user.is_admin() else url_for('support') }}" class="support-link">
+    <i class="fas fa-life-ring"></i> Messages
+
+    {% if new_support > 0 %}
+        <span class="notif-badge">{{ new_support }}</span>
+    {% endif %}
+</a>
 
     <div class="logout"><a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></div>
 </div>
