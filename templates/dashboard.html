@@ -44,7 +44,7 @@
         <h2>AquaGuard</h2>
     </div>
 
-    <!-- Dashboard dropdown (FIXED) -->
+    
     <div class="dropdown">
         <a href="{{ url_for('dashboard') }}" class="dropdown-toggle" onclick="toggleDropdown(event)">
             <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -65,7 +65,7 @@
 
     <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
 
-    <!-- Charts Dropdown (FIXED) -->
+    <!-- Charts Dropdown-->
     <div class="dropdown">
         <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
             <i class="fas fa-chart-line"></i> Charts
@@ -79,7 +79,7 @@
         </div>
     </div>
 
-     <!-- USERS (ADMIN ONLY) -->
+     <!-- USERS (ADMIN) -->
     {% if current_user.is_authenticated and current_user.is_admin() %}
     <a href="{{ url_for('manage_users') }}">
         <i class="fas fa-users"></i> Users
@@ -91,7 +91,7 @@
         <i class="fas fa-headset"></i> Support
     </a>
 
-    <!-- MESSAGES (ADMIN ONLY) -->
+    <!-- MESSAGES (ADMIN) -->
 {% if current_user.is_authenticated and current_user.is_admin() %}
 <a href="{{ url_for('admin_support') }}" class="support-link">
     <i class="fas fa-life-ring"></i> Messages
@@ -113,7 +113,7 @@
 
 <div class="main">
 
-    <!-- Small aesthetic save button -->
+    
     <div class="top-actions">
         <button class="mini-btn save-mini" onclick="promptSave()">💾 Save</button>
     </div>

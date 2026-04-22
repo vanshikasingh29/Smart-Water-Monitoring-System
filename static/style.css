@@ -229,7 +229,7 @@ tr:nth-child(even) {
     transform: translateY(-2px);
 }
 
-/* 🔥 DROPDOWN FIXED (NO CONFLICT VERSION) */
+
 .dropdown {
     position: relative;
 }

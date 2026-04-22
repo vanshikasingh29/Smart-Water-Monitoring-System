@@ -32,7 +32,7 @@
 </style>
 <body>
 
-<!-- ================= SIDEBAR (FIXED + DASHBOARD WORKS) ================= -->
+<!-- ================= SIDEBAR================= -->
 <div class="sidebar">
 
     <div class="sidebar-logo">
@@ -46,7 +46,7 @@
     <!-- Dashboard dropdown -->
     <div class="dropdown">
 
-        <!-- ✅ FIX: REMOVE onclick so it ALWAYS navigates -->
+
         <a href="{{ url_for('dashboard') }}" class="dropdown-toggle">
             <i class="fas fa-tachometer-alt"></i> Dashboard
             {% if samples %}<i class="fas fa-angle-down arrow"></i>{% endif %}
@@ -66,10 +66,10 @@
 
     <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
 
-    <!-- Charts Dropdown -->
+
     <div class="dropdown">
 
-        <!-- keep dropdown toggle but SAFE -->
+        
         <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
             <i class="fas fa-chart-line"></i> Charts
             <i class="fas fa-angle-down arrow"></i>
@@ -88,13 +88,13 @@
 
 
 
-     <!-- SUPPORT LINK (ADD THIS IF NOT ALREADY) -->
+
     <a href="{{ url_for('support') }}">
         <i class="fas fa-headset"></i> Support
     </a>
 
    
-    <!-- MESSAGES (ADMIN ONLY) -->
+    
 {% if current_user.is_authenticated and current_user.is_admin() %}
 <a href="{{ url_for('admin_support') }}" class="support-link">
     <i class="fas fa-life-ring"></i> Messages
@@ -113,10 +113,10 @@
     </div>
 
 </div>
-<!-- ================= END SIDEBAR ================= -->
 
 
-<!-- ================= MAIN CONTENT ================= -->
+
+
 <div class="main">
 
     <h2 style="text-align:center;">📅 Monthly Water Monitoring</h2>
@@ -126,7 +126,7 @@
 </div>
 
 
-<!-- ================= SAFE JS (NO BREAKING NAVIGATION) ================= -->
+
 <script>
 
 // dropdown safe toggle
@@ -151,7 +151,7 @@ document.addEventListener("click", function(e) {
     }
 });
 
-// logout
+
 function confirmLogout() {
     if(confirm("Are you sure you want to logout?")) {
         window.location.href="{{ url_for('logout') }}";
@@ -159,7 +159,7 @@ function confirmLogout() {
 }
 
 
-// ================= CHART =================
+
 const rawData = {{ history | tojson | safe }};
 
 if (!rawData || rawData.length === 0) {

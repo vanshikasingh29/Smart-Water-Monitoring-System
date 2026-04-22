@@ -60,7 +60,7 @@
 
     <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
 
-    <!-- Charts dropdown (MISSING BEFORE → NOW FIXED) -->
+    
     <div class="dropdown">
         <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
             <i class="fas fa-chart-line"></i> Charts
@@ -79,13 +79,13 @@
     </div>
 
 
-     <!-- SUPPORT LINK (ADD THIS IF NOT ALREADY) -->
+    
     <a href="{{ url_for('support') }}">
         <i class="fas fa-headset"></i> Support
     </a>
 
    
-    <!-- MESSAGES (ADMIN ONLY) -->
+    
 {% if current_user.is_authenticated and current_user.is_admin() %}
 <a href="{{ url_for('admin_support') }}" class="support-link">
     <i class="fas fa-life-ring"></i> Messages

@@ -33,7 +33,7 @@
 
 <body>
 
-<!-- ================= SIDEBAR (EXACT DASHBOARD COPY) ================= -->
+
 <div class="sidebar">
 
     <div class="sidebar-logo">
@@ -90,13 +90,13 @@
     {% endif %}
 
 
-     <!-- SUPPORT LINK (ADD THIS IF NOT ALREADY) -->
+     <!-- SUPPORT -->
     <a href="{{ url_for('support') }}">
         <i class="fas fa-headset"></i> Support
     </a>
 
    
-    <!-- MESSAGES (ADMIN ONLY) -->
+    <!-- MESSAGES (ADMIN) -->
 {% if current_user.is_authenticated and current_user.is_admin() %}
 <a href="{{ url_for('admin_support') }}" class="support-link">
     <i class="fas fa-life-ring"></i> Messages
@@ -117,10 +117,10 @@
     </div>
 
 </div>
-<!-- ================= END SIDEBAR ================= -->
 
 
-<!-- ================= MAIN ================= -->
+
+
 <div class="main">
 
     <h2 style="text-align:center;">📊 Weekly Water Monitoring</h2>
@@ -130,7 +130,7 @@
 </div>
 
 
-<!-- ================= SCRIPT ================= -->
+
 <script>
 
 function toggleDropdown(event) {
@@ -154,7 +154,7 @@ function confirmLogout() {
     }
 }
 
-// ================= CLEAN CHART (ONLY ONE) =================
+
 const rawData = {{ history | tojson | safe }} || [];
 
 if (!rawData || rawData.length === 0) {

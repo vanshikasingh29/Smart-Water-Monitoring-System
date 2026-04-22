@@ -65,9 +65,8 @@ def read_data():
 
 
 
-# =========================
-# 🆕 SUPPORT SYSTEM
-# =========================
+
+# ----------SUPPORT SYSTEM-----------------
 def read_support():
     if not os.path.exists("support.json"):
         with open("support.json", "w") as f:
@@ -80,7 +79,7 @@ def save_support(data):
     with open("support.json", "w") as f:
         json.dump(data, f, indent=4)
 
-#---------------- GLOBAL SUPPORT NOTIFICATION BADGE ----------------
+#----------------  NOTIFICATION BADGE ----------------
 @app.context_processor
 def inject_support_notifications():
     data = read_support()
@@ -201,9 +200,9 @@ def support():
         "support.html",
         is_admin=current_user.is_admin()
     )
-# =========================
-# 🆕 ADMIN SUPPORT DASHBOARD
-# =========================
+
+
+#--------------ADMIN SUPPORT----------------
 @app.route("/admin/support")
 @login_required
 def admin_support():
@@ -221,9 +220,8 @@ def admin_support():
         is_admin=True
     )
 
-# =========================
-# 🆕 MARK AS READ
-# =========================
+
+#--------------MARK AS READ---------------------
 @app.route("/admin/mark_read/<int:index>")
 @login_required
 def mark_read(index):
@@ -232,13 +230,15 @@ def mark_read(index):
 
     data = read_support()
 
-    # ✅ REMOVE MESSAGE INSTEAD OF MARKING
+
     if 0 <= index < len(data["messages"]):
         data["messages"].pop(index)
 
     save_support(data)
 
     return redirect(url_for("admin_support"))
+
+
 # ---------------- DASHBOARD ----------------
 @app.route("/dashboard")
 @login_required
@@ -251,9 +251,6 @@ def dashboard():
 
     status_text, status_ok = get_system_status(data)
 
-    # ✅ ADD THIS (support notifications count)
-   # support_data = read_support()
-    #new_support = sum(1 for m in support_data["messages"] if m["status"] == "new")
 
     # LOAD SAMPLES
     samples_file = "samples.json"
@@ -275,7 +272,6 @@ def dashboard():
         total_users=total_users,
         status_text=status_text,
         status_ok=status_ok
-       # new_support=new_support  # ✅ IMPORTANT
     )
 
 # ---------------- VIEW CHARTS ----------------
@@ -285,7 +281,7 @@ def charts():
     data = read_data()
     history = data["history"]
 
-    # ✅ USE LATEST DATA TIME (NOT REAL TIME)
+  
     if history:
         latest_time = max(datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") for d in history)
     else:
@@ -312,7 +308,7 @@ def charts():
 
     return render_template(
         "charts.html",
-        history=filtered,  # ✅ FIXED
+        history=filtered,  
         samples=samples,
         is_admin=current_user.is_admin()
     )
@@ -373,6 +369,8 @@ def sensor_charts():
     samples=samples,
     is_admin=current_user.is_admin()
     )
+
+
 # ---------------- VIEW SAMPLE ----------------
 @app.route("/sample/<name>")
 @login_required
@@ -449,7 +447,7 @@ def delete_sample(name):
     return redirect(url_for("dashboard"))
 
 
-# ---------------- HISTORY (UPDATED WITH LOCATION SUPPORT) ----------------
+# ---------------- HISTORY-------------------
 @app.route("/history")
 @login_required
 def history():
@@ -529,7 +527,7 @@ def delete_user(username):
     if not current_user.is_admin():
         return redirect(url_for("dashboard"))
 
-    # ❌ PREVENT SELF-DELETE (IMPORTANT FIX)
+    
     if username == current_user.id:
         return "You cannot delete your own account", 403
 
@@ -540,6 +538,7 @@ def delete_user(username):
         save_users(users)
 
     return redirect(url_for("manage_users"))
+
 
 @app.route('/admin/toggle_admin/<username>')
 @login_required
@@ -558,7 +557,7 @@ def toggle_admin(username):
 
     current_role = users[username].get("role")
 
-    # 🚨 BLOCK LAST ADMIN REMOVAL
+
     if current_role == "admin" and admin_count == 1:
         flash("You cannot remove the last admin. Promote another user first.")
         return redirect(url_for("manage_users"))
@@ -615,7 +614,7 @@ def download_report():
     else:
         samples = []
 
-    # ✅ USE LATEST DATA TIME
+    
     if history:
         latest_time = max(datetime.strptime(d["time"], "%Y-%m-%d %H:%M:%S") for d in history)
     else:

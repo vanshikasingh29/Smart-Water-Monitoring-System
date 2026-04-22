@@ -70,13 +70,13 @@
     {% endif %}
 
 
-     <!-- SUPPORT LINK (ADD THIS IF NOT ALREADY) -->
+    
     <a href="{{ url_for('support') }}">
         <i class="fas fa-headset"></i> Support
     </a>
 
     
-    <!-- MESSAGES (ADMIN ONLY) -->
+    <!-- MESSAGES (ADMIN) -->
 {% if current_user.is_authenticated and current_user.is_admin() %}
 <a href="{{ url_for('admin_support') }}" class="support-link">
     <i class="fas fa-life-ring"></i> Messages
@@ -101,7 +101,7 @@
 
     <h1>User Management</h1>
 
-    <!-- 🔔 FLASH MESSAGES (POPUP AREA) -->
+    
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <div class="flash-container">

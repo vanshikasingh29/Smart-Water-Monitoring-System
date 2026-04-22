@@ -9,15 +9,14 @@
 
 <style>
 
-/* SUPPORT PAGE ADDITIONS */
 
-/* spacing */
+
 .support-card {
     margin-bottom: 25px;
     text-align: left;
 }
 
-/* headings */
+
 .support-card h2 {
     display: flex;
     align-items: center;
@@ -26,7 +25,7 @@
     margin-bottom: 15px;
 }
 
-/* FAQ blocks */
+
 .faq-item {
     padding: 12px;
     border-radius: 10px;
@@ -51,7 +50,7 @@
     color: #555;
 }
 
-/* FORM */
+
 .support-form textarea {
     width: 100%;
     height: 120px;
@@ -69,8 +68,7 @@
     outline: none;
 }
 
-/* BUTTON */
-/* BUTTON */
+
 .mark-btn {
     padding: 5px 10px;
     border-radius: 8px;
@@ -86,7 +84,7 @@
 }
 
 
-/* 🔔 SUPPORT BADGE */
+
 .support-link {
     position: relative;
 }
@@ -113,7 +111,7 @@
 
 <body>
 
-<!-- SIDEBAR -->
+
 <div class="sidebar">
 
     <div class="sidebar-logo">
@@ -132,7 +130,7 @@
         <i class="fas fa-history"></i> History
     </a>
 
-    <!-- CHARTS DROPDOWN -->
+    
     <div class="dropdown">
         <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
             <i class="fas fa-chart-line"></i> Charts
@@ -152,13 +150,13 @@
     </a>
     {% endif %}
 
-    <!-- SUPPORT LINK (ADD THIS IF NOT ALREADY) -->
+    
     <a href="{{ url_for('support') }}">
         <i class="fas fa-headset"></i> Support
     </a>
 
 
-    <!-- MESSAGES (ADMIN ONLY) -->
+    
 {% if current_user.is_authenticated and current_user.is_admin() %}
 <a href="{{ url_for('admin_support') }}" class="support-link">
     <i class="fas fa-life-ring"></i> Messages
@@ -179,7 +177,7 @@
 </div>
 
 
-<!-- MAIN CONTENT -->
+
 <div class="main">
 
     <h1>Support & Help</h1>
@@ -204,7 +202,7 @@
         </div>
     </section>
 
-    <!-- CONTACT FORM -->
+   
     <section class="card support-card">
         <h2><i class="fas fa-headset"></i> Contact Support</h2>
 
@@ -220,7 +218,7 @@
 </div>
 
 
-<!-- SCRIPTS -->
+
 <script>
 function confirmLogout() {
     if (confirm("Are you sure you want to logout?")) {

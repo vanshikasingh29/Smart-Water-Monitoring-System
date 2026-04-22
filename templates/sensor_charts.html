@@ -48,7 +48,7 @@
             height: 320px !important;
         }
 
-        /* IMPORTANT so sidebar works like dashboard */
+
         .main {
             margin-left: 180px;
             padding: 20px;
@@ -81,7 +81,7 @@
 
 <body>
 
-<!-- ================= SIDEBAR (EXACT SAME AS DASHBOARD) ================= -->
+
 <div class="sidebar">
 
     <div class="sidebar-logo">
@@ -92,7 +92,7 @@
         <h2>AquaGuard</h2>
     </div>
 
-    <!-- Dashboard -->
+    
     <div class="dropdown">
         <a href="{{ url_for('dashboard') }}" class="dropdown-toggle">
             <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -113,7 +113,7 @@
 
     <a href="{{ url_for('history') }}"><i class="fas fa-history"></i> History</a>
 
-    <!-- Charts -->
+
     <div class="dropdown">
         <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
             <i class="fas fa-chart-line"></i> Charts
@@ -131,13 +131,12 @@
     <a href="{{ url_for('manage_users') }}"><i class="fas fa-users"></i> Users</a>
     {% endif %}
 
-     <!-- SUPPORT LINK (ADD THIS IF NOT ALREADY) -->
+
     <a href="{{ url_for('support') }}">
         <i class="fas fa-headset"></i> Support
     </a>
 
    
-    <!-- MESSAGES (ADMIN ONLY) -->
 {% if current_user.is_authenticated and current_user.is_admin() %}
 <a href="{{ url_for('admin_support') }}" class="support-link">
     <i class="fas fa-life-ring"></i> Messages
@@ -156,10 +155,9 @@
     </div>
 
 </div>
-<!-- ================= END SIDEBAR ================= -->
 
 
-<!-- ================= MAIN ================= -->
+
 <div class="main">
 
 <h2>📊 Sensor Comparison Across Samples</h2>
@@ -185,7 +183,7 @@
 
 </div>
 
-<!-- ================= SCRIPTS ================= -->
+
 <script>
 
 function toggleDropdown(e) {
@@ -215,7 +213,7 @@ function confirmLogout() {
 }
 
 
-// ================= CHART DATA =================
+
 const samples = {{ samples | tojson | safe }};
 
 if (!samples || samples.length === 0) {
