@@ -1,0 +1,398 @@
+/* GLOBAL */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f9fc;
+    color: #333;
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    width: 160px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    background: linear-gradient(to bottom, #ff4586, #fe92cc);
+    padding-top: 30px;
+    color: white;
+}
+
+/* SIDEBAR TITLE */
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+/* SIDEBAR LINKS */
+.sidebar a {
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.sidebar a i {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 6px;
+}
+
+/* LOGOUT FIX (NO OVERLAP) */
+.logout {
+    margin-top: auto;
+    padding-bottom: 40px;
+}
+
+/* MAIN */
+.main {
+    margin-left: 180px;
+    padding: 30px;
+}
+
+h1 {
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* DASHBOARD CARDS */
+.dashboard {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    flex: 1;
+    text-align: center;
+    border-radius: 18px;
+    box-shadow: 0px 6px 14px rgba(0,0,0,0.07);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 12px 24px rgba(0,0,0,0.12);
+}
+
+.card h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* STATUS COLORS */
+.safe { color: #2ecc71; }
+.danger { color: #e74c3c; }
+
+/* ALERTS */
+.alerts {
+    margin-top: 40px;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0px 6px 14px rgba(0,0,0,0.07);
+}
+
+.alerts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.alerts li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+
+
+/* CHART */
+.chart {
+    margin-top: 40px;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0px 6px 14px rgba(0,0,0,0.07);
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+th {
+    background: #f8d7e2;
+    padding: 14px;
+}
+
+td {
+    padding: 14px;
+}
+
+tr:nth-child(even) {
+    background: #fafafa;
+}
+
+/* LOGO */
+.sidebar-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.icon-stack {
+    position: relative;
+    width: 28px;
+    height: 28px;
+}
+
+.icon-stack .fa-shield {
+    font-size: 28px;
+    color: rgb(221, 250, 252);
+}
+
+.icon-stack .fa-tint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    font-size: 16px;
+    color: rgb(107, 192, 238);
+}
+
+/* TOP BUTTONS */
+.top-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.mini-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.save-mini {
+    background: #e3f2fd;
+    color: #0288d1;
+}
+
+/* REPORT BUTTONS */
+.report-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.report-btn {
+    width: 110px;
+    padding: 6px;
+    border-radius: 10px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+
+    background: linear-gradient(135deg, #eaf6ff, #d9f2ff);
+    color: #2c3e50;
+
+    border: 1px solid rgba(2, 136, 209, 0.15);
+    transition: 0.2s;
+}
+
+.report-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+.dropdown {
+    position: relative;
+}
+
+/* hidden by default */
+.dropdown-content {
+    display: none;
+    flex-direction: column;
+    padding-left: 10px;
+}
+
+/* open state */
+.dropdown.active .dropdown-content {
+    display: flex;
+}
+
+/* ARROW */
+.arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.dropdown.active .arrow {
+    transform: rotate(180deg);
+}
+
+/* SAMPLE LINKS */
+.sample-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.sample-link:hover {
+    transform: translateX(3px);
+}
+
+
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* TABLE HEADER (PINK STYLE) */
+th {
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+    color: rgb(248, 238, 238);
+    background: linear-gradient(135deg, #f7aad8, #fa9fbd);
+    border-bottom: none;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+tr:hover {
+    background: #fafcfe;
+}
+
+/* ROLE BADGES */
+.role-badge {
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.role-badge.admin {
+    background: rgba(2,136,209,0.1);
+    color: #0288d1;
+}
+
+.role-badge.user {
+    background: #f2f2f2;
+    color: #555;
+}
+
+/* ACTIONS */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.actions a {
+    white-space: nowrap;
+    display: inline-block;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* ROLE COLORS */
+.role-btn.promote {
+    color: #2ecc71;
+}
+
+.role-btn.demote {
+    color: #efa937;
+}
+
+/* DELETE */
+.delete-btn {
+    color: #f0311b;
+    margin-left: auto;
+    padding-left: 16px;
+    border-left: 1px solid #eee;
+}
+
+/* HOVER */
+.role-btn:hover,
+.delete-btn:hover {
+    opacity: 0.7;
+    transition: 0.2s ease;
+}
+
+.flash-container {
+    margin: 15px 0;
+}
+
+.flash-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 12px 15px;
+    border-left: 5px solid #e74c3c;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    background: #ff4586;
+    color: white;
+    cursor: pointer;
+}
