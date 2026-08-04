@@ -1,0 +1,220 @@
+{
+    "samples": [
+        {
+            "name": "Sample1",
+            "current": {
+                "ph": 7.1,
+                "temperature": 22.5,
+                "turbidity": 3.0,
+                "risk": "SAFE",
+                "time": "2026-03-01 12:00:00"
+            },
+            "alerts": [
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-01 10:00:00"
+                },
+                {
+                    "message": "pH slightly high",
+                    "time": "2026-02-28 18:30:00"
+                },
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-03 10:00:00"
+                }
+            ],
+            "history": [
+                {
+                    "ph": 6.8,
+                    "temperature": 21,
+                    "turbidity": 4.2,
+                    "risk": "HIGH",
+                    "time": "2026-02-28 12:00:00"
+                },
+                {
+                    "ph": 7.5,
+                    "temperature": 22,
+                    "turbidity": 3.5,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-28 08:00:00"
+                },
+                {
+                    "ph": 5.8,
+                    "temperature": 21,
+                    "turbidity": 2.2,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-21 12:00:00"
+                },
+                {
+                    "ph": 8.5,
+                    "temperature": 22,
+                    "turbidity": 5.5,
+                    "risk": "LOW",
+                    "time": "2026-02-21 08:00:00"
+                }
+            ]
+        },
+        {
+            "name": "Sample2",
+            "current": {
+                "ph": 3.1,
+                "temperature": 21.5,
+                "turbidity": 6.0,
+                "risk": "SAFE",
+                "time": "2026-03-01 12:00:00"
+            },
+            "alerts": [
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-01 10:00:00"
+                },
+                {
+                    "message": "pH slightly high",
+                    "time": "2026-02-28 18:30:00"
+                },
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-03 10:00:00"
+                }
+            ],
+            "history": [
+                {
+                    "ph": 7.8,
+                    "temperature": 11,
+                    "turbidity": 3.2,
+                    "risk": "HIGH",
+                    "time": "2026-02-28 12:00:00"
+                },
+                {
+                    "ph": 9.5,
+                    "temperature": 34,
+                    "turbidity": 2.5,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-28 08:00:00"
+                },
+                {
+                    "ph": 5.8,
+                    "temperature": 21,
+                    "turbidity": 2.2,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-21 12:00:00"
+                },
+                {
+                    "ph": 8.5,
+                    "temperature": 22,
+                    "turbidity": 5.5,
+                    "risk": "LOW",
+                    "time": "2026-02-21 08:00:00"
+                }
+            ]
+        },
+        {
+            "name": "Sample3",
+            "current": {
+                "ph": 3.1,
+                "temperature": 12.5,
+                "turbidity": 5.0,
+                "risk": "SAFE",
+                "time": "2026-03-01 12:00:00"
+            },
+            "alerts": [
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-01 10:00:00"
+                },
+                {
+                    "message": "pH slightly high",
+                    "time": "2026-02-28 18:30:00"
+                },
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-03 10:00:00"
+                }
+            ],
+            "history": [
+                {
+                    "ph": 6.8,
+                    "temperature": 21,
+                    "turbidity": 4.2,
+                    "risk": "HIGH",
+                    "time": "2026-02-28 12:00:00"
+                },
+                {
+                    "ph": 7.5,
+                    "temperature": 22,
+                    "turbidity": 3.5,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-28 08:00:00"
+                },
+                {
+                    "ph": 5.8,
+                    "temperature": 21,
+                    "turbidity": 2.2,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-21 12:00:00"
+                },
+                {
+                    "ph": 8.5,
+                    "temperature": 22,
+                    "turbidity": 5.5,
+                    "risk": "LOW",
+                    "time": "2026-02-21 08:00:00"
+                }
+            ]
+        },
+        {
+            "name": "Sample4",
+            "current": {
+                "ph": 6.1,
+                "temperature": 29.5,
+                "turbidity": 5.0,
+                "risk": "SAFE",
+                "time": "2026-03-01 12:00:00"
+            },
+            "alerts": [
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-01 10:00:00"
+                },
+                {
+                    "message": "pH slightly high",
+                    "time": "2026-02-28 18:30:00"
+                },
+                {
+                    "message": "High turbidity detected",
+                    "time": "2026-03-03 10:00:00"
+                }
+            ],
+            "history": [
+                {
+                    "ph": 6.8,
+                    "temperature": 21,
+                    "turbidity": 4.2,
+                    "risk": "HIGH",
+                    "time": "2026-02-28 12:00:00"
+                },
+                {
+                    "ph": 7.5,
+                    "temperature": 22,
+                    "turbidity": 3.5,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-28 08:00:00"
+                },
+                {
+                    "ph": 5.8,
+                    "temperature": 21,
+                    "turbidity": 2.2,
+                    "risk": "MEDIUM",
+                    "time": "2026-02-21 12:00:00"
+                },
+                {
+                    "ph": 8.5,
+                    "temperature": 22,
+                    "turbidity": 5.5,
+                    "risk": "LOW",
+                    "time": "2026-02-21 08:00:00"
+                }
+            ]
+        }
+    ]
+}
