@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Charts</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+    .support-link {
+    position: relative;
+}
+
+.notif-badge {
+    position: absolute;
+    top: 6px;
+    right: 12px;
+
+    background: #ff3b6b;
+    color: white;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    padding: 2px 6px;
+    border-radius: 50px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+</style>
+
+<body>
+
+
+<div class="sidebar">
+
+    <div class="sidebar-logo">
+        <span class="icon-stack">
+            <i class="fas fa-shield"></i>
+            <i class="fas fa-tint"></i>
+        </span>
+        <h2>AquaGuard</h2>
+    </div>
+
+    <!-- Dashboard dropdown -->
+    <div class="dropdown">
+        <a href="{{ url_for('dashboard') }}" class="dropdown-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+            {% if samples %}<i class="fas fa-angle-down arrow"></i>{% endif %}
+        </a>
+
+        {% if samples %}
+        <div class="dropdown-content">
+            {% for s in samples %}
+            <a class="sample-link" href="{{ url_for('view_sample', name=s.name) }}">
+                <i class="fas fa-vial sample-icon"></i>
+                <span class="sample-text">{{ s.name }}</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- History -->
+    <a href="{{ url_for('history') }}">
+        <i class="fas fa-history"></i> History
+    </a>
+
+    <!-- Charts dropdown -->
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" onclick="toggleDropdown(event)">
+            <i class="fas fa-chart-line"></i> Charts
+            <i class="fas fa-angle-down arrow"></i>
+        </a>
+
+        <div class="dropdown-content">
+            <a href="{{ url_for('charts') }}">Weekly Charts</a>
+            <a href="{{ url_for('monthly_charts') }}">Monthly Charts</a>
+            <a href="{{ url_for('sensor_charts') }}">Sensor Charts</a>
+        </div>
+    </div>
+
+    <!-- USERS -->
+    {% if is_admin %}
+    <a href="{{ url_for('manage_users') }}">
+        <i class="fas fa-users"></i> Users
+    </a>
+    {% endif %}
+
+
+     <!-- SUPPORT -->
+    <a href="{{ url_for('support') }}">
+        <i class="fas fa-headset"></i> Support
+    </a>
+
+   
+    <!-- MESSAGES (ADMIN) -->
+{% if current_user.is_authenticated and current_user.is_admin() %}
+<a href="{{ url_for('admin_support') }}" class="support-link">
+    <i class="fas fa-life-ring"></i> Messages
+
+    {% if new_support is defined and new_support > 0 %}
+        <span class="notif-badge">{{ new_support }}</span>
+    {% endif %}
+</a>
+{% endif %}
+
+
+
+    <!-- Logout -->
+    <div class="logout">
+        <a href="#" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+</div>
+
+
+
+
+<div class="main">
+
+    <h2 style="text-align:center;">📊 Weekly Water Monitoring</h2>
+
+    <canvas id="myChart"></canvas>
+
+</div>
+
+
+
+<script>
+
+function toggleDropdown(event) {
+    event.preventDefault();
+
+    const parent = event.currentTarget.parentElement;
+    parent.classList.toggle("active");
+}
+
+document.addEventListener("click", function(e) {
+    if (!e.target.closest(".dropdown")) {
+        document.querySelectorAll('.dropdown').forEach(d => {
+            d.classList.remove('active');
+        });
+    }
+});
+
+function confirmLogout() {
+    if(confirm("Are you sure you want to logout?")) {
+        window.location.href="{{ url_for('logout') }}";
+    }
+}
+
+
+const rawData = {{ history | tojson | safe }} || [];
+
+if (!rawData || rawData.length === 0) {
+    document.body.innerHTML += "<p style='color:red;text-align:center;'>No data available</p>";
+} else {
+
+    const labels = rawData.map(d => {
+        if (!d.time) return "N/A";
+        const date = new Date(d.time);
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    });
+
+    const ph = rawData.map(d => d.ph || 0);
+    const turbidity = rawData.map(d => d.turbidity || 0);
+    const temperature = rawData.map(d => d.temperature || 0);
+
+    new Chart(document.getElementById('myChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'pH',
+                    data: ph,
+                    borderColor: 'blue'
+                },
+                {
+                    label: 'Turbidity',
+                    data: turbidity,
+                    borderColor: 'green'
+                },
+                {
+                    label: 'Temperature',
+                    data: temperature,
+                    borderColor: 'red'
+                }
+            ]
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>

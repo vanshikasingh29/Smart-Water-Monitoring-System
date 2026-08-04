@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Support</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+
+.message-card {
+    padding: 15px;
+    border-radius: 12px;
+    background: #f9fcff;
+    margin-bottom: 15px;
+    transition: 0.2s;
+}
+
+.message-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.message-user {
+    font-weight: 600;
+}
+
+.message-time {
+    font-size: 12px;
+    color: #888;
+}
+
+.message-text {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* STATUS */
+.status-new {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.status-read {
+    color: #2ecc71;
+}
+
+/* BUTTON */
+.mark-btn {
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #7df2a6, #4ef472);
+}
+
+.mark-btn:hover {
+    transform: translateY(-1px);
+}
+
+   .support-link {
+    position: relative;
+}
+
+.notif-badge {
+    position: absolute;
+    top: 6px;
+    right: 12px;
+
+    background: #ff3b6b;
+    color: white;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    padding: 2px 6px;
+    border-radius: 50px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+    <div class="sidebar-logo">
+        <span class="icon-stack">
+            <i class="fas fa-shield"></i>
+            <i class="fas fa-tint"></i>
+        </span>
+        <h2>AquaGuard</h2>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+    </a>
+
+    <a href="{{ url_for('history') }}">
+        <i class="fas fa-history"></i> History
+    </a>
+
+    <!-- CHARTS -->
+    <div class="dropdown">
+        <a href="#" onclick="toggleDropdown(event)">
+            <i class="fas fa-chart-line"></i> Charts
+            <i class="fas fa-angle-down arrow"></i>
+        </a>
+
+        <div class="dropdown-content">
+            <a href="{{ url_for('charts') }}">Weekly Charts</a>
+            <a href="{{ url_for('monthly_charts') }}">Monthly Charts</a>
+            <a href="{{ url_for('sensor_charts') }}">Sensor Charts</a>
+        </div>
+    </div>
+
+    <a href="{{ url_for('manage_users') }}">
+        <i class="fas fa-users"></i> Users
+    </a>
+
+  <!-- SUPPORT LINK -->
+    <a href="{{ url_for('support') }}">
+        <i class="fas fa-headset"></i> Support
+    </a>
+
+    
+    <!-- MESSAGES (ADMIN) -->
+{% if current_user.is_authenticated and current_user.is_admin() %}
+<a href="{{ url_for('admin_support') }}" class="support-link">
+    <i class="fas fa-life-ring"></i> Messages
+
+    {% if new_support is defined and new_support > 0 %}
+        <span class="notif-badge">{{ new_support }}</span>
+    {% endif %}
+</a>
+{% endif %}
+
+
+    <div class="logout">
+        <a href="#" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+</div>
+
+
+<div class="main">
+
+    <h1>Support Messages</h1>
+
+    <div class="card">
+        <h2>New Messages: {{ new_count }}</h2>
+    </div>
+
+    {% for m in messages %}
+    <div class="message-card">
+
+        <div class="message-header">
+            <span class="message-user">{{ m.user }}</span>
+            <span class="message-time">{{ m.time }}</span>
+        </div>
+
+        <div class="message-text">
+            {{ m.message }}
+        </div>
+
+        {% if m.status == "new" %}
+            <span class="status-new">NEW</span>
+            <a href="{{ url_for('mark_read', index=loop.index0) }}">
+                <button class="mark-btn">Mark as Read</button>
+            </a>
+        {% else %}
+            <span class="status-read">Read</span>
+        {% endif %}
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<script>
+function confirmLogout() {
+    if (confirm("Are you sure you want to logout?")) {
+        window.location.href = "{{ url_for('logout') }}";
+    }
+}
+
+function toggleDropdown(event) {
+    event.preventDefault();
+    const parent = event.currentTarget.parentElement;
+    parent.classList.toggle("active");
+}
+</script>
+
+</body>
+</html>
